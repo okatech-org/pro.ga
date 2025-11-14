@@ -3,16 +3,6 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-interface DemoAccount {
-  email: string;
-  password: string;
-  full_name: string;
-  account_type: string;
-  workspace_name: string | null;
-  business_name: string | null;
-  demo_data: any;
-}
-
 export const useDemoLogin = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
@@ -21,57 +11,35 @@ export const useDemoLogin = () => {
     setIsLoading(true);
     
     try {
-      // Fetch demo account info
-      const { data: demoAccount, error: fetchError } = await supabase
-        .from('demo_accounts')
-        .select('*')
-        .eq('account_type', accountType)
-        .single();
-
-      if (fetchError || !demoAccount) {
-        throw new Error('Compte démo introuvable');
-      }
-
-      const { email, password, full_name } = demoAccount as DemoAccount;
-
-      // Try to sign in first
-      let { error: signInError } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      // Call server-side Edge Function for secure demo authentication
+      const { data, error } = await supabase.functions.invoke('demo-login', {
+        body: { accountType },
       });
 
-      // If user doesn't exist, create account
-      if (signInError?.message?.includes('Invalid login credentials')) {
-        const { error: signUpError } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            data: {
-              full_name,
-              account_type: accountType,
-            },
-            emailRedirectTo: `${window.location.origin}/dashboard`,
-          },
-        });
-
-        if (signUpError) throw signUpError;
-
-        // Sign in after signup
-        const { error: signInAfterSignUpError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
-        });
-
-        if (signInAfterSignUpError) throw signInAfterSignUpError;
-      } else if (signInError) {
-        throw signInError;
+      if (error) {
+        throw new Error('Échec de la connexion démo');
       }
 
-      toast.success(`Connecté en tant que ${full_name}`);
+      if (!data?.session) {
+        throw new Error('Session invalide');
+      }
+
+      // Set the session from the Edge Function response
+      const { error: sessionError } = await supabase.auth.setSession({
+        access_token: data.session.access_token,
+        refresh_token: data.session.refresh_token,
+      });
+
+      if (sessionError) {
+        throw new Error('Impossible de définir la session');
+      }
+
+      toast.success(`Connecté en tant que ${data.full_name}`);
       navigate('/dashboard');
     } catch (error: any) {
-      console.error('Demo login error:', error);
-      toast.error(error.message || 'Erreur lors de la connexion démo');
+      // Generic error message to user, no sensitive details
+      toast.error('Erreur lors de la connexion démo');
+      // Server-side logging only - no console.error with sensitive data
     } finally {
       setIsLoading(false);
     }
