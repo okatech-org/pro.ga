@@ -1,0 +1,721 @@
+/**
+ * ASTED DESIGN 01 - Components
+ * Version: 1.0.0
+ * Composants neomorphiques réutilisables
+ */
+
+/* ============================================
+   CARDS (CARTES)
+   ============================================ */
+
+/* Card standard - Élevée */
+.asted-card {
+  background: var(--asted-bg-base);
+  border-radius: var(--asted-radius-xl);
+  padding: var(--asted-space-6);
+  box-shadow: 
+    10px 10px 20px var(--asted-shadow-dark),
+    -10px -10px 20px var(--asted-shadow-light);
+  transition: all var(--asted-transition-slow);
+}
+
+.asted-card-hover:hover {
+  box-shadow: 
+    12px 12px 24px var(--asted-shadow-dark),
+    -12px -12px 24px var(--asted-shadow-light);
+  transform: translateY(-2px);
+}
+
+/* Card inset - Enfoncée */
+.asted-card-inset {
+  background: var(--asted-bg-base);
+  border-radius: var(--asted-radius-lg);
+  padding: var(--asted-space-5);
+  box-shadow: 
+    inset 6px 6px 12px var(--asted-shadow-dark),
+    inset -6px -6px 12px var(--asted-shadow-light);
+}
+
+/* Card plate - Sans relief */
+.asted-card-flat {
+  background: var(--asted-bg-base);
+  border-radius: var(--asted-radius-lg);
+  padding: var(--asted-space-6);
+  border: 1px solid var(--asted-border-light);
+}
+
+/* Card avec padding réduit */
+.asted-card-sm {
+  padding: var(--asted-space-4);
+}
+
+.asted-card-lg {
+  padding: var(--asted-space-8);
+}
+
+/* ============================================
+   BUTTONS (BOUTONS)
+   ============================================ */
+
+/* Bouton de base */
+.asted-button {
+  /* Base */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--asted-space-2);
+  
+  /* Apparence */
+  background: var(--asted-bg-base);
+  color: var(--asted-text-primary);
+  font-family: var(--asted-font-sans);
+  font-size: var(--asted-text-base);
+  font-weight: var(--asted-font-medium);
+  
+  /* Espacement */
+  padding: var(--asted-space-3) var(--asted-space-6);
+  
+  /* Bordures */
+  border: none;
+  border-radius: var(--asted-radius-md);
+  
+  /* Ombres neomorphiques */
+  box-shadow: 
+    5px 5px 10px var(--asted-shadow-dark),
+    -5px -5px 10px var(--asted-shadow-light);
+  
+  /* Interactions */
+  cursor: pointer;
+  transition: all var(--asted-transition-base);
+  user-select: none;
+  
+  /* Accessibilité */
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.asted-button:hover:not(:disabled) {
+  box-shadow: 
+    6px 6px 12px var(--asted-shadow-dark),
+    -6px -6px 12px var(--asted-shadow-light);
+  transform: translateY(-1px);
+}
+
+.asted-button:active:not(:disabled) {
+  box-shadow: 
+    inset 3px 3px 6px var(--asted-shadow-dark),
+    inset -3px -3px 6px var(--asted-shadow-light);
+  transform: translateY(0);
+}
+
+.asted-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Variantes de couleur */
+.asted-button-primary {
+  background: var(--asted-primary-500);
+  color: #ffffff;
+  box-shadow: 
+    5px 5px 15px rgba(59, 130, 246, 0.4),
+    -5px -5px 15px rgba(255, 255, 255, 0.8);
+}
+
+.asted-button-primary:hover:not(:disabled) {
+  background: var(--asted-primary-600);
+  box-shadow: 
+    6px 6px 18px rgba(59, 130, 246, 0.5),
+    -6px -6px 18px rgba(255, 255, 255, 0.9);
+}
+
+.asted-button-primary:active:not(:disabled) {
+  background: var(--asted-primary-700);
+  box-shadow: 
+    inset 3px 3px 6px rgba(0, 0, 0, 0.3),
+    inset -3px -3px 6px rgba(255, 255, 255, 0.1);
+}
+
+.asted-button-success {
+  background: var(--asted-success-500);
+  color: #ffffff;
+  box-shadow: 
+    5px 5px 15px rgba(16, 185, 129, 0.4),
+    -5px -5px 15px rgba(255, 255, 255, 0.8);
+}
+
+.asted-button-warning {
+  background: var(--asted-warning-500);
+  color: #ffffff;
+  box-shadow: 
+    5px 5px 15px rgba(245, 158, 11, 0.4),
+    -5px -5px 15px rgba(255, 255, 255, 0.8);
+}
+
+.asted-button-danger {
+  background: var(--asted-danger-500);
+  color: #ffffff;
+  box-shadow: 
+    5px 5px 15px rgba(239, 68, 68, 0.4),
+    -5px -5px 15px rgba(255, 255, 255, 0.8);
+}
+
+/* Tailles de boutons */
+.asted-button-sm {
+  padding: var(--asted-space-2) var(--asted-space-4);
+  font-size: var(--asted-text-sm);
+  border-radius: var(--asted-radius-base);
+  min-height: 36px;
+}
+
+.asted-button-lg {
+  padding: var(--asted-space-4) var(--asted-space-8);
+  font-size: var(--asted-text-lg);
+  border-radius: var(--asted-radius-lg);
+  min-height: 52px;
+}
+
+/* Bouton pleine largeur */
+.asted-button-full {
+  width: 100%;
+}
+
+/* Bouton icon only */
+.asted-button-icon {
+  padding: var(--asted-space-3);
+  width: 44px;
+  height: 44px;
+}
+
+/* Bouton ghost (texte seulement) */
+.asted-button-ghost {
+  background: transparent;
+  box-shadow: none;
+  color: var(--asted-primary-500);
+}
+
+.asted-button-ghost:hover:not(:disabled) {
+  background: var(--asted-bg-elevated);
+  box-shadow: none;
+}
+
+/* État loading */
+.asted-button-loading {
+  position: relative;
+  color: transparent;
+  pointer-events: none;
+}
+
+.asted-button-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid var(--asted-text-disabled);
+  border-top-color: var(--asted-primary-500);
+  border-radius: 50%;
+  animation: asted-spin 0.6s linear infinite;
+}
+
+/* ============================================
+   INPUTS (CHAMPS DE SAISIE)
+   ============================================ */
+
+.asted-input {
+  /* Base */
+  width: 100%;
+  background: var(--asted-bg-base);
+  color: var(--asted-text-primary);
+  font-family: var(--asted-font-sans);
+  font-size: var(--asted-text-base);
+  
+  /* Espacement */
+  padding: var(--asted-space-3) var(--asted-space-4);
+  
+  /* Bordures */
+  border: none;
+  border-radius: var(--asted-radius-md);
+  
+  /* Effet inset */
+  box-shadow: 
+    inset 4px 4px 8px var(--asted-shadow-dark),
+    inset -4px -4px 8px var(--asted-shadow-light);
+  
+  /* Transition */
+  transition: all var(--asted-transition-base);
+  
+  /* Accessibilité */
+  min-height: 44px;
+}
+
+.asted-input:focus {
+  outline: none;
+  box-shadow: 
+    inset 4px 4px 8px var(--asted-shadow-dark),
+    inset -4px -4px 8px var(--asted-shadow-light),
+    0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.asted-input::placeholder {
+  color: var(--asted-text-disabled);
+}
+
+.asted-input:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: var(--asted-bg-sunken);
+}
+
+/* Input avec erreur */
+.asted-input-error {
+  box-shadow: 
+    inset 4px 4px 8px var(--asted-shadow-dark),
+    inset -4px -4px 8px var(--asted-shadow-light),
+    0 0 0 2px var(--asted-danger-500);
+}
+
+/* Textarea */
+.asted-textarea {
+  min-height: 120px;
+  resize: vertical;
+  font-family: var(--asted-font-sans);
+  line-height: var(--asted-leading-relaxed);
+}
+
+/* Select */
+.asted-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 9L1 4h10z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--asted-space-4) center;
+  padding-right: var(--asted-space-10);
+}
+
+/* ============================================
+   FORMS (FORMULAIRES)
+   ============================================ */
+
+.asted-form-group {
+  margin-bottom: var(--asted-space-6);
+}
+
+.asted-label {
+  display: block;
+  font-size: var(--asted-text-sm);
+  font-weight: var(--asted-font-medium);
+  color: var(--asted-text-secondary);
+  margin-bottom: var(--asted-space-2);
+}
+
+.asted-label-required::after {
+  content: ' *';
+  color: var(--asted-danger-500);
+}
+
+.asted-help-text {
+  display: block;
+  font-size: var(--asted-text-xs);
+  color: var(--asted-text-tertiary);
+  margin-top: var(--asted-space-2);
+}
+
+.asted-error-text {
+  display: block;
+  font-size: var(--asted-text-xs);
+  color: var(--asted-danger-500);
+  margin-top: var(--asted-space-2);
+}
+
+/* Groupe de boutons */
+.asted-button-group {
+  display: flex;
+  gap: var(--asted-space-3);
+  flex-wrap: wrap;
+}
+
+/* Checkbox & Radio */
+.asted-checkbox,
+.asted-radio {
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--asted-radius-sm);
+  background: var(--asted-bg-base);
+  box-shadow: 
+    inset 3px 3px 6px var(--asted-shadow-dark),
+    inset -3px -3px 6px var(--asted-shadow-light);
+  cursor: pointer;
+  transition: all var(--asted-transition-fast);
+  position: relative;
+}
+
+.asted-radio {
+  border-radius: 50%;
+}
+
+.asted-checkbox:checked,
+.asted-radio:checked {
+  background: var(--asted-primary-500);
+  box-shadow: 
+    3px 3px 6px var(--asted-shadow-dark),
+    -3px -3px 6px var(--asted-shadow-light);
+}
+
+.asted-checkbox:checked::after {
+  content: '✓';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.asted-radio:checked::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: white;
+  border-radius: 50%;
+}
+
+/* ============================================
+   BADGES & PILLS
+   ============================================ */
+
+.asted-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--asted-space-1);
+  padding: var(--asted-space-1) var(--asted-space-3);
+  font-size: var(--asted-text-xs);
+  font-weight: var(--asted-font-semibold);
+  border-radius: var(--asted-radius-full);
+  background: var(--asted-bg-base);
+  color: var(--asted-text-secondary);
+  box-shadow: 
+    3px 3px 6px var(--asted-shadow-dark),
+    -3px -3px 6px var(--asted-shadow-light);
+}
+
+/* Variantes de badges */
+.asted-badge-primary {
+  background: var(--asted-primary-100);
+  color: var(--asted-primary-700);
+}
+
+.asted-badge-success {
+  background: var(--asted-success-100);
+  color: var(--asted-success-700);
+}
+
+.asted-badge-warning {
+  background: var(--asted-warning-100);
+  color: var(--asted-warning-700);
+}
+
+.asted-badge-danger {
+  background: var(--asted-danger-100);
+  color: var(--asted-danger-700);
+}
+
+/* Icon pill */
+.asted-pill-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--asted-bg-base);
+  box-shadow: 
+    4px 4px 8px var(--asted-shadow-dark),
+    -4px -4px 8px var(--asted-shadow-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all var(--asted-transition-base);
+}
+
+.asted-pill-icon-sm {
+  width: 36px;
+  height: 36px;
+}
+
+.asted-pill-icon-lg {
+  width: 64px;
+  height: 64px;
+}
+
+/* ============================================
+   NAVIGATION
+   ============================================ */
+
+.asted-nav {
+  background: var(--asted-bg-base);
+  border-radius: var(--asted-radius-xl);
+  padding: var(--asted-space-4);
+  box-shadow: 
+    8px 8px 16px var(--asted-shadow-dark),
+    -8px -8px 16px var(--asted-shadow-light);
+  display: flex;
+  gap: var(--asted-space-2);
+  flex-wrap: wrap;
+}
+
+.asted-nav-item {
+  padding: var(--asted-space-3) var(--asted-space-4);
+  border-radius: var(--asted-radius-md);
+  color: var(--asted-text-secondary);
+  font-weight: var(--asted-font-medium);
+  transition: all var(--asted-transition-base);
+  cursor: pointer;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: var(--asted-space-2);
+}
+
+.asted-nav-item:hover {
+  color: var(--asted-text-primary);
+  background: var(--asted-bg-elevated);
+}
+
+.asted-nav-item.active {
+  color: var(--asted-primary-500);
+  box-shadow: 
+    inset 3px 3px 6px var(--asted-shadow-dark),
+    inset -3px -3px 6px var(--asted-shadow-light);
+}
+
+/* ============================================
+   ALERTS & NOTIFICATIONS
+   ============================================ */
+
+.asted-alert {
+  background: var(--asted-bg-base);
+  border-radius: var(--asted-radius-lg);
+  padding: var(--asted-space-4);
+  box-shadow: 
+    6px 6px 12px var(--asted-shadow-dark),
+    -6px -6px 12px var(--asted-shadow-light);
+  display: flex;
+  gap: var(--asted-space-3);
+  align-items: flex-start;
+}
+
+.asted-alert-icon {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+}
+
+.asted-alert-content {
+  flex: 1;
+}
+
+.asted-alert-title {
+  font-weight: var(--asted-font-semibold);
+  margin-bottom: var(--asted-space-1);
+}
+
+.asted-alert-description {
+  font-size: var(--asted-text-sm);
+  color: var(--asted-text-secondary);
+}
+
+/* Variantes d'alerts */
+.asted-alert-success {
+  border-left: 4px solid var(--asted-success-500);
+}
+
+.asted-alert-warning {
+  border-left: 4px solid var(--asted-warning-500);
+}
+
+.asted-alert-danger {
+  border-left: 4px solid var(--asted-danger-500);
+}
+
+.asted-alert-info {
+  border-left: 4px solid var(--asted-info-500);
+}
+
+/* ============================================
+   MODAL & DIALOG
+   ============================================ */
+
+.asted-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: var(--asted-z-modal-backdrop);
+  animation: asted-fade-in 0.2s ease;
+}
+
+.asted-modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: var(--asted-bg-base);
+  border-radius: var(--asted-radius-2xl);
+  padding: var(--asted-space-6);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+  z-index: var(--asted-z-modal);
+  box-shadow: 
+    16px 16px 32px var(--asted-shadow-dark),
+    -16px -16px 32px var(--asted-shadow-light);
+  animation: asted-slide-up 0.3s ease;
+}
+
+.asted-modal-header {
+  margin-bottom: var(--asted-space-6);
+}
+
+.asted-modal-title {
+  font-size: var(--asted-text-2xl);
+  font-weight: var(--asted-font-bold);
+  color: var(--asted-text-primary);
+}
+
+.asted-modal-body {
+  margin-bottom: var(--asted-space-6);
+}
+
+.asted-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--asted-space-3);
+}
+
+/* ============================================
+   DIVIDER (SÉPARATEUR)
+   ============================================ */
+
+.asted-divider {
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    var(--asted-shadow-light) 0%,
+    var(--asted-shadow-dark) 50%,
+    var(--asted-shadow-light) 100%
+  );
+  margin: var(--asted-space-6) 0;
+  border: none;
+}
+
+/* ============================================
+   AVATARS
+   ============================================ */
+
+.asted-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--asted-bg-base);
+  box-shadow: 
+    4px 4px 8px var(--asted-shadow-dark),
+    -4px -4px 8px var(--asted-shadow-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: var(--asted-font-semibold);
+  color: var(--asted-text-secondary);
+  overflow: hidden;
+}
+
+.asted-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.asted-avatar-sm { width: 32px; height: 32px; font-size: var(--asted-text-sm); }
+.asted-avatar-lg { width: 64px; height: 64px; font-size: var(--asted-text-lg); }
+.asted-avatar-xl { width: 96px; height: 96px; font-size: var(--asted-text-2xl); }
+
+/* ============================================
+   PROGRESS BAR
+   ============================================ */
+
+.asted-progress {
+  width: 100%;
+  height: 12px;
+  background: var(--asted-bg-base);
+  border-radius: var(--asted-radius-full);
+  box-shadow: 
+    inset 3px 3px 6px var(--asted-shadow-dark),
+    inset -3px -3px 6px var(--asted-shadow-light);
+  overflow: hidden;
+}
+
+.asted-progress-bar {
+  height: 100%;
+  background: var(--asted-primary-500);
+  border-radius: var(--asted-radius-full);
+  transition: width 0.3s ease;
+  box-shadow: 
+    2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   TOOLTIP
+   ============================================ */
+
+.asted-tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.asted-tooltip-content {
+  position: absolute;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--asted-text-primary);
+  color: var(--asted-bg-base);
+  padding: var(--asted-space-2) var(--asted-space-3);
+  border-radius: var(--asted-radius-base);
+  font-size: var(--asted-text-xs);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--asted-transition-fast);
+  z-index: var(--asted-z-tooltip);
+}
+
+.asted-tooltip:hover .asted-tooltip-content {
+  opacity: 1;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 640px) {
+  .asted-card {
+    padding: var(--asted-space-4);
+    border-radius: var(--asted-radius-lg);
+  }
+  
+  .asted-button {
+    padding: var(--asted-space-2) var(--asted-space-4);
+    font-size: var(--asted-text-sm);
+  }
+  
+  .asted-modal {
+    max-width: 95vw;
+    padding: var(--asted-space-4);
+  }
+}

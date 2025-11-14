@@ -1,3 +1,7 @@
+@import './assets/asted-design-core.css';
+@import './assets/asted-design-components.css';
+@import './assets/asted-design-utilities.css';
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
