@@ -6,6 +6,20 @@ import { Label } from "@/components/ui/label";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { ArrowLeft } from "lucide-react";
+import { z } from "zod";
+
+const authSchema = z.object({
+  email: z.string()
+    .trim()
+    .email("Email invalide")
+    .max(255, "Email trop long"),
+  password: z.string()
+    .min(8, "Le mot de passe doit contenir au moins 8 caractères")
+    .max(128, "Mot de passe trop long")
+    .regex(/[A-Z]/, "Le mot de passe doit contenir au moins une majuscule")
+    .regex(/[a-z]/, "Le mot de passe doit contenir au moins une minuscule")
+    .regex(/[0-9]/, "Le mot de passe doit contenir au moins un chiffre")
+});
 
 const Auth = () => {
   const [searchParams] = useSearchParams();
@@ -29,10 +43,22 @@ const Auth = () => {
     setLoading(true);
 
     try {
+      // Validate inputs
+      const validationResult = authSchema.safeParse({ email, password });
+      
+      if (!validationResult.success) {
+        const errors = validationResult.error.errors.map(err => err.message).join(". ");
+        toast.error(errors);
+        setLoading(false);
+        return;
+      }
+
+      const validatedData = validationResult.data;
+
       if (isSignUp) {
         const { error } = await supabase.auth.signUp({
-          email,
-          password,
+          email: validatedData.email,
+          password: validatedData.password,
           options: {
             emailRedirectTo: `${window.location.origin}/dashboard`,
           },
@@ -43,8 +69,8 @@ const Auth = () => {
         toast.success("Compte créé ! Vérifiez votre email pour confirmer.");
         // Auto-login after signup if email confirmation is disabled
         const { error: signInError } = await supabase.auth.signInWithPassword({
-          email,
-          password,
+          email: validatedData.email,
+          password: validatedData.password,
         });
         
         if (!signInError) {
@@ -52,8 +78,8 @@ const Auth = () => {
         }
       } else {
         const { error } = await supabase.auth.signInWithPassword({
-          email,
-          password,
+          email: validatedData.email,
+          password: validatedData.password,
         });
 
         if (error) throw error;
@@ -62,7 +88,9 @@ const Auth = () => {
         navigate("/dashboard");
       }
     } catch (error: any) {
-      toast.error(error.message || "Une erreur s'est produite");
+      // Show generic error message to user, avoid exposing internal details
+      toast.error("Une erreur s'est produite lors de l'authentification");
+      console.error("Auth error:", error); // Keep detailed logging for debugging
     } finally {
       setLoading(false);
     }
@@ -118,9 +146,14 @@ const Auth = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                minLength={6}
+                minLength={8}
                 className="asted-input"
               />
+              {isSignUp && (
+                <p className="text-xs text-muted-foreground">
+                  Au moins 8 caractères, 1 majuscule, 1 minuscule et 1 chiffre
+                </p>
+              )}
             </div>
 
             <Button
