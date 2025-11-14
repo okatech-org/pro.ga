@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import { DashboardSidebar } from "@/components/DashboardSidebar";
+import { BrandShowcase } from "@/components/BrandShowcase";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { 
   TrendingUp, 
@@ -151,6 +152,11 @@ const Dashboard = () => {
               <Users className="w-4 h-4" />
               <span>Ajouter un client</span>
             </button>
+          </div>
+
+          {/* Brand Showcase */}
+          <div className="mt-8">
+            <BrandShowcase />
           </div>
         </main>
       </div>

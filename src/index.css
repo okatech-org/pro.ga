@@ -1,6 +1,7 @@
 @import './assets/asted-design-core.css';
 @import './assets/asted-design-components.css';
 @import './assets/asted-design-utilities.css';
+@import './assets/proga-brand-colors.css';
 
 @tailwind base;
 @tailwind components;
@@ -13,56 +14,57 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* Asted Design 01 - Neomorphic Design System */
+    /* Personnalisé avec les couleurs PRO.GA */
     
     /* Base colors - Light mode */
-    --background: 210 20% 98%;
-    --foreground: 220 15% 20%;
+    --background: 215 25% 97%;
+    --foreground: 222 47% 11%;
     
     /* Neomorphic shadows */
-    --shadow-light: 210 10% 100%;
-    --shadow-dark: 210 10% 85%;
+    --shadow-light: 210 40% 98%;
+    --shadow-dark: 215 16% 82%;
     
-    /* Primary - Professional blue */
-    --primary: 217 91% 60%;
+    /* Primary - Indigo moderne PRO.GA */
+    --primary: 239 84% 67%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 217 91% 55%;
+    --primary-hover: 243 75% 59%;
     
-    /* Secondary - Lighter blue */
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 220 15% 20%;
+    /* Secondary - Lighter indigo */
+    --secondary: 215 25% 97%;
+    --secondary-foreground: 222 47% 11%;
     
-    /* Success - Green for finance */
-    --success: 142 76% 36%;
+    /* Success - Emerald green */
+    --success: 160 84% 39%;
     --success-foreground: 0 0% 100%;
     
-    /* Warning - Orange */
+    /* Warning - Amber */
     --warning: 38 92% 50%;
     --warning-foreground: 0 0% 100%;
     
-    /* Destructive - Red */
+    /* Destructive - Modern red */
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
     
     /* Muted */
-    --muted: 210 40% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 215 25% 97%;
+    --muted-foreground: 215 16% 47%;
     
-    /* Accent */
-    --accent: 217 91% 60%;
+    /* Accent - Indigo */
+    --accent: 239 84% 67%;
     --accent-foreground: 0 0% 100%;
     
     /* Card */
-    --card: 210 20% 98%;
-    --card-foreground: 220 15% 20%;
+    --card: 215 25% 97%;
+    --card-foreground: 222 47% 11%;
     
     /* Popover */
     --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 20%;
+    --popover-foreground: 222 47% 11%;
     
     /* Border & Input */
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 217 91% 60%;
+    --border: 215 20% 89%;
+    --input: 215 20% 89%;
+    --ring: 239 84% 67%;
     
     /* Radius */
     --radius: 1rem;
@@ -73,36 +75,36 @@ All colors MUST be HSL.
     --neo-intensity: 0.15;
     
     /* Sidebar */
-    --sidebar-background: 210 20% 98%;
-    --sidebar-foreground: 220 15% 20%;
-    --sidebar-primary: 217 91% 60%;
+    --sidebar-background: 215 25% 97%;
+    --sidebar-foreground: 222 47% 11%;
+    --sidebar-primary: 239 84% 67%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 210 40% 96%;
-    --sidebar-accent-foreground: 220 15% 20%;
-    --sidebar-border: 214 32% 91%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-accent: 215 25% 97%;
+    --sidebar-accent-foreground: 222 47% 11%;
+    --sidebar-border: 215 20% 89%;
+    --sidebar-ring: 239 84% 67%;
   }
 
   .dark {
     /* Base colors - Dark mode */
-    --background: 220 20% 10%;
-    --foreground: 210 20% 98%;
+    --background: 222 47% 11%;
+    --foreground: 215 25% 97%;
     
     /* Neomorphic shadows - Dark */
-    --shadow-light: 220 20% 15%;
-    --shadow-dark: 220 20% 5%;
+    --shadow-light: 220 20% 16%;
+    --shadow-dark: 222 47% 6%;
     
-    /* Primary */
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
-    --primary-hover: 217 91% 65%;
+    /* Primary - Brighter indigo for dark mode */
+    --primary: 239 84% 75%;
+    --primary-foreground: 222 47% 11%;
+    --primary-hover: 239 84% 80%;
     
     /* Secondary */
-    --secondary: 220 20% 15%;
-    --secondary-foreground: 210 20% 98%;
+    --secondary: 222 47% 16%;
+    --secondary-foreground: 215 25% 97%;
     
     /* Success */
-    --success: 142 76% 40%;
+    --success: 160 84% 45%;
     --success-foreground: 0 0% 100%;
     
     /* Warning */
@@ -110,39 +112,39 @@ All colors MUST be HSL.
     --warning-foreground: 0 0% 100%;
     
     /* Destructive */
-    --destructive: 0 84% 60%;
+    --destructive: 0 84% 65%;
     --destructive-foreground: 0 0% 100%;
     
     /* Muted */
-    --muted: 220 20% 15%;
-    --muted-foreground: 215 20% 65%;
+    --muted: 222 47% 16%;
+    --muted-foreground: 215 16% 65%;
     
     /* Accent */
-    --accent: 217 91% 60%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 239 84% 75%;
+    --accent-foreground: 222 47% 11%;
     
     /* Card */
-    --card: 220 20% 12%;
-    --card-foreground: 210 20% 98%;
+    --card: 222 47% 13%;
+    --card-foreground: 215 25% 97%;
     
     /* Popover */
-    --popover: 220 20% 12%;
-    --popover-foreground: 210 20% 98%;
+    --popover: 222 47% 13%;
+    --popover-foreground: 215 25% 97%;
     
     /* Border & Input */
-    --border: 220 20% 18%;
-    --input: 220 20% 18%;
-    --ring: 217 91% 60%;
+    --border: 215 28% 22%;
+    --input: 215 28% 22%;
+    --ring: 239 84% 75%;
     
     /* Sidebar */
-    --sidebar-background: 220 20% 10%;
-    --sidebar-foreground: 210 20% 98%;
-    --sidebar-primary: 217 91% 60%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 220 20% 15%;
-    --sidebar-accent-foreground: 210 20% 98%;
-    --sidebar-border: 220 20% 18%;
-    --sidebar-ring: 217 91% 60%;
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 215 25% 97%;
+    --sidebar-primary: 239 84% 75%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 222 47% 16%;
+    --sidebar-accent-foreground: 215 25% 97%;
+    --sidebar-border: 215 28% 22%;
+    --sidebar-ring: 239 84% 75%;
   }
 }
 
