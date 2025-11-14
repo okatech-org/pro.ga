@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { useDemoLogin } from "@/hooks/useDemoLogin";
 import {
   Dialog,
   DialogContent,
@@ -38,6 +39,7 @@ interface DemoData {
 }
 
 interface DemoAccountProps {
+  accountType: string;
   icon: React.ReactNode;
   title: string;
   category: string;
@@ -50,6 +52,7 @@ interface DemoAccountProps {
 }
 
 const DemoAccountCard = ({ 
+  accountType,
   icon, 
   title, 
   category, 
@@ -58,8 +61,10 @@ const DemoAccountCard = ({
   color,
   workflow,
   demoData,
-  onDiscover
-}: DemoAccountProps & { onDiscover: () => void }) => {
+  onDiscover,
+  onLoginDemo,
+  isLoading
+}: DemoAccountProps & { onDiscover: () => void; onLoginDemo: () => void; isLoading: boolean }) => {
   return (
     <div className="asted-card p-6 hover:scale-105 transition-all">
       <div className={`w-16 h-16 ${color} rounded-2xl flex items-center justify-center mb-4`}>
@@ -91,10 +96,18 @@ const DemoAccountCard = ({
         )}
       </div>
       
-      <Button onClick={onDiscover} className="w-full asted-button">
-        Découvrir ce compte
-        <ArrowRight className="w-4 h-4 ml-2" />
-      </Button>
+      <div className="flex gap-2">
+        <Button onClick={onDiscover} variant="outline" className="flex-1">
+          Découvrir
+        </Button>
+        <Button 
+          onClick={onLoginDemo} 
+          disabled={isLoading}
+          className="flex-1 asted-button"
+        >
+          {isLoading ? "Connexion..." : "Se connecter"}
+        </Button>
+      </div>
     </div>
   );
 };
@@ -102,11 +115,15 @@ const DemoAccountCard = ({
 const DemoDetailModal = ({ 
   account, 
   isOpen, 
-  onClose 
+  onClose,
+  onLoginDemo,
+  isLoading 
 }: { 
   account: DemoAccountProps | null; 
   isOpen: boolean; 
-  onClose: () => void 
+  onClose: () => void;
+  onLoginDemo: () => void;
+  isLoading: boolean;
 }) => {
   if (!account) return null;
 
@@ -200,12 +217,25 @@ const DemoDetailModal = ({
               Prêt à essayer ce type de compte ?
             </h4>
             <p className="text-muted-foreground mb-4">
-              Créez votre compte gratuit et commencez à gérer votre activité dès maintenant.
+              Testez ce type de compte immédiatement ou créez votre propre compte personnalisé.
             </p>
-            <Button onClick={() => window.location.href = "/auth?signup=true"} className="asted-button">
-              Créer mon compte gratuit
-              <ArrowRight className="w-4 h-4 ml-2" />
-            </Button>
+            <div className="flex gap-3">
+              <Button 
+                onClick={onLoginDemo}
+                disabled={isLoading}
+                variant="default"
+                className="flex-1 asted-button"
+              >
+                {isLoading ? "Connexion..." : "Se connecter en tant que démo"}
+              </Button>
+              <Button 
+                onClick={() => window.location.href = "/auth?signup=true"} 
+                variant="outline"
+                className="flex-1"
+              >
+                Créer mon compte
+              </Button>
+            </div>
           </div>
         </div>
       </DialogContent>
@@ -217,14 +247,20 @@ const Demo = () => {
   const navigate = useNavigate();
   const [selectedAccount, setSelectedAccount] = useState<DemoAccountProps | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { loginAsDemo, isLoading } = useDemoLogin();
 
   const handleDiscover = (account: DemoAccountProps) => {
     setSelectedAccount(account);
     setIsModalOpen(true);
   };
 
+  const handleLoginDemo = (accountType: string) => {
+    loginAsDemo(accountType);
+  };
+
   const demoAccounts: DemoAccountProps[] = [
     {
+      accountType: "admin",
       icon: <Shield className="w-8 h-8 text-destructive" />,
       title: "Admin Système",
       category: "SYSTÈME",
@@ -275,6 +311,7 @@ const Demo = () => {
       ]
     },
     {
+      accountType: "individual",
       icon: <User className="w-8 h-8 text-primary" />,
       title: "Particulier",
       category: "ESPACE PERSO",
@@ -325,6 +362,7 @@ const Demo = () => {
       ]
     },
     {
+      accountType: "clothing_store",
       icon: <ShoppingBag className="w-8 h-8 text-primary" />,
       title: "Boutique de Vêtements",
       category: "COMMERCE",
@@ -376,6 +414,7 @@ const Demo = () => {
       ]
     },
     {
+      accountType: "salon",
       icon: <Scissors className="w-8 h-8 text-success" />,
       title: "Salon Coiffure & Beauté",
       category: "SERVICES",
@@ -427,6 +466,7 @@ const Demo = () => {
       ]
     },
     {
+      accountType: "fruit_veg",
       icon: <Apple className="w-8 h-8 text-success" />,
       title: "Vente Fruits & Légumes",
       category: "ARTISANAL",
@@ -478,6 +518,7 @@ const Demo = () => {
       ]
     },
     {
+      accountType: "restaurant",
       icon: <UtensilsCrossed className="w-8 h-8 text-warning" />,
       title: "Restaurant",
       category: "RESTAURATION",
@@ -529,6 +570,7 @@ const Demo = () => {
       ]
     },
     {
+      accountType: "services",
       icon: <Briefcase className="w-8 h-8 text-primary" />,
       title: "Prestations Services Divers",
       category: "SERVICES PRO",
@@ -580,6 +622,7 @@ const Demo = () => {
       ]
     },
     {
+      accountType: "multi_activity",
       icon: <Building2 className="w-8 h-8 text-warning" />,
       title: "PME Multi-activités",
       category: "ENTREPRISE",
@@ -683,6 +726,8 @@ const Demo = () => {
               key={index} 
               {...account} 
               onDiscover={() => handleDiscover(account)}
+              onLoginDemo={() => handleLoginDemo(account.accountType)}
+              isLoading={isLoading}
             />
           ))}
         </div>
@@ -692,6 +737,8 @@ const Demo = () => {
           account={selectedAccount}
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
+          onLoginDemo={() => selectedAccount && handleLoginDemo(selectedAccount.accountType)}
+          isLoading={isLoading}
         />
 
         {/* CTA Section */}
