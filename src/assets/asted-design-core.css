@@ -1,0 +1,454 @@
+/**
+ * ASTED DESIGN 01 - Core Variables & Base Styles
+ * Version: 1.0.0
+ * Created by: PELLEN-LAKOUMBA / OKA TECH
+ * Description: Système de design neomorphique avec mode clair/sombre
+ */
+
+/* ============================================
+   VARIABLES CSS - MODE CLAIR (DEFAULT)
+   ============================================ */
+
+:root {
+  /* === COULEURS DE BASE === */
+  /* Arrière-plans neomorphiques */
+  --asted-bg-base: #e5e7eb;
+  --asted-bg-elevated: #f3f4f6;
+  --asted-bg-sunken: #d1d5db;
+  
+  /* Ombres neomorphiques */
+  --asted-shadow-light: #ffffff;
+  --asted-shadow-dark: #c5c7ca;
+  
+  /* Textes */
+  --asted-text-primary: #1f2937;
+  --asted-text-secondary: #4b5563;
+  --asted-text-tertiary: #6b7280;
+  --asted-text-disabled: #9ca3af;
+  
+  /* Bordures */
+  --asted-border-light: #e5e7eb;
+  --asted-border-medium: #d1d5db;
+  --asted-border-dark: #9ca3af;
+  
+  /* === COULEURS SÉMANTIQUES === */
+  /* Primaire - Bleu */
+  --asted-primary-50: #eff6ff;
+  --asted-primary-100: #dbeafe;
+  --asted-primary-200: #bfdbfe;
+  --asted-primary-300: #93c5fd;
+  --asted-primary-400: #60a5fa;
+  --asted-primary-500: #3b82f6;
+  --asted-primary-600: #2563eb;
+  --asted-primary-700: #1d4ed8;
+  --asted-primary-800: #1e40af;
+  --asted-primary-900: #1e3a8a;
+  
+  /* Success - Vert */
+  --asted-success-50: #ecfdf5;
+  --asted-success-100: #d1fae5;
+  --asted-success-200: #a7f3d0;
+  --asted-success-300: #6ee7b7;
+  --asted-success-400: #34d399;
+  --asted-success-500: #10b981;
+  --asted-success-600: #059669;
+  --asted-success-700: #047857;
+  --asted-success-800: #065f46;
+  --asted-success-900: #064e3b;
+  
+  /* Warning - Orange */
+  --asted-warning-50: #fffbeb;
+  --asted-warning-100: #fef3c7;
+  --asted-warning-200: #fde68a;
+  --asted-warning-300: #fcd34d;
+  --asted-warning-400: #fbbf24;
+  --asted-warning-500: #f59e0b;
+  --asted-warning-600: #d97706;
+  --asted-warning-700: #b45309;
+  --asted-warning-800: #92400e;
+  --asted-warning-900: #78350f;
+  
+  /* Danger - Rouge */
+  --asted-danger-50: #fef2f2;
+  --asted-danger-100: #fee2e2;
+  --asted-danger-200: #fecaca;
+  --asted-danger-300: #fca5a5;
+  --asted-danger-400: #f87171;
+  --asted-danger-500: #ef4444;
+  --asted-danger-600: #dc2626;
+  --asted-danger-700: #b91c1c;
+  --asted-danger-800: #991b1b;
+  --asted-danger-900: #7f1d1d;
+  
+  /* Info - Violet */
+  --asted-info-50: #faf5ff;
+  --asted-info-100: #f3e8ff;
+  --asted-info-200: #e9d5ff;
+  --asted-info-300: #d8b4fe;
+  --asted-info-400: #c084fc;
+  --asted-info-500: #8b5cf6;
+  --asted-info-600: #7c3aed;
+  --asted-info-700: #6d28d9;
+  --asted-info-800: #5b21b6;
+  --asted-info-900: #4c1d95;
+  
+  /* === TYPOGRAPHIE === */
+  /* Familles de police */
+  --asted-font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 
+                     'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 
+                     'Helvetica Neue', sans-serif;
+  --asted-font-mono: 'SF Mono', 'Monaco', 'Cascadia Code', 'Roboto Mono', 
+                     'Courier New', monospace;
+  
+  /* Tailles de police */
+  --asted-text-xs: 0.75rem;      /* 12px */
+  --asted-text-sm: 0.875rem;     /* 14px */
+  --asted-text-base: 1rem;       /* 16px */
+  --asted-text-lg: 1.125rem;     /* 18px */
+  --asted-text-xl: 1.25rem;      /* 20px */
+  --asted-text-2xl: 1.5rem;      /* 24px */
+  --asted-text-3xl: 1.875rem;    /* 30px */
+  --asted-text-4xl: 2.25rem;     /* 36px */
+  --asted-text-5xl: 3rem;        /* 48px */
+  
+  /* Poids de police */
+  --asted-font-light: 300;
+  --asted-font-normal: 400;
+  --asted-font-medium: 500;
+  --asted-font-semibold: 600;
+  --asted-font-bold: 700;
+  --asted-font-extrabold: 800;
+  
+  /* Hauteur de ligne */
+  --asted-leading-tight: 1.25;
+  --asted-leading-normal: 1.5;
+  --asted-leading-relaxed: 1.75;
+  --asted-leading-loose: 2;
+  
+  /* Espacement des lettres */
+  --asted-tracking-tight: -0.025em;
+  --asted-tracking-normal: 0;
+  --asted-tracking-wide: 0.025em;
+  --asted-tracking-wider: 0.05em;
+  --asted-tracking-widest: 0.1em;
+  
+  /* === ESPACEMENTS === */
+  --asted-space-0: 0;
+  --asted-space-1: 0.25rem;      /* 4px */
+  --asted-space-2: 0.5rem;       /* 8px */
+  --asted-space-3: 0.75rem;      /* 12px */
+  --asted-space-4: 1rem;         /* 16px */
+  --asted-space-5: 1.25rem;      /* 20px */
+  --asted-space-6: 1.5rem;       /* 24px */
+  --asted-space-8: 2rem;         /* 32px */
+  --asted-space-10: 2.5rem;      /* 40px */
+  --asted-space-12: 3rem;        /* 48px */
+  --asted-space-16: 4rem;        /* 64px */
+  --asted-space-20: 5rem;        /* 80px */
+  --asted-space-24: 6rem;        /* 96px */
+  
+  /* === RAYONS DE BORDURE === */
+  --asted-radius-none: 0;
+  --asted-radius-sm: 0.375rem;   /* 6px */
+  --asted-radius-base: 0.5rem;   /* 8px */
+  --asted-radius-md: 0.75rem;    /* 12px */
+  --asted-radius-lg: 1rem;       /* 16px */
+  --asted-radius-xl: 1.25rem;    /* 20px */
+  --asted-radius-2xl: 1.5rem;    /* 24px */
+  --asted-radius-full: 9999px;
+  
+  /* === BREAKPOINTS === */
+  --asted-breakpoint-xs: 475px;
+  --asted-breakpoint-sm: 640px;
+  --asted-breakpoint-md: 768px;
+  --asted-breakpoint-lg: 1024px;
+  --asted-breakpoint-xl: 1280px;
+  --asted-breakpoint-2xl: 1536px;
+  
+  /* === CONTENEURS === */
+  --asted-container-xs: 475px;
+  --asted-container-sm: 640px;
+  --asted-container-md: 768px;
+  --asted-container-lg: 1024px;
+  --asted-container-xl: 1280px;
+  --asted-container-2xl: 1400px;
+  
+  /* === TRANSITIONS === */
+  --asted-transition-fast: 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  --asted-transition-base: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  --asted-transition-slow: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* === Z-INDEX === */
+  --asted-z-dropdown: 1000;
+  --asted-z-sticky: 1020;
+  --asted-z-fixed: 1030;
+  --asted-z-modal-backdrop: 1040;
+  --asted-z-modal: 1050;
+  --asted-z-popover: 1060;
+  --asted-z-tooltip: 1070;
+}
+
+/* ============================================
+   MODE SOMBRE
+   ============================================ */
+
+[data-theme="dark"] {
+  /* Arrière-plans neomorphiques */
+  --asted-bg-base: #1e293b;
+  --asted-bg-elevated: #293548;
+  --asted-bg-sunken: #151e2d;
+  
+  /* Ombres neomorphiques */
+  --asted-shadow-light: #374155;
+  --asted-shadow-dark: #0f172a;
+  
+  /* Textes */
+  --asted-text-primary: #f1f5f9;
+  --asted-text-secondary: #cbd5e1;
+  --asted-text-tertiary: #94a3b8;
+  --asted-text-disabled: #64748b;
+  
+  /* Bordures */
+  --asted-border-light: #334155;
+  --asted-border-medium: #475569;
+  --asted-border-dark: #64748b;
+  
+  /* Ajustements des couleurs sémantiques pour le dark mode */
+  --asted-primary-500: #60a5fa;
+  --asted-success-500: #34d399;
+  --asted-warning-500: #fbbf24;
+  --asted-danger-500: #f87171;
+  --asted-info-500: #a78bfa;
+}
+
+/* Détection automatique du mode sombre système */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    /* Applique les mêmes variables que [data-theme="dark"] */
+    --asted-bg-base: #1e293b;
+    --asted-bg-elevated: #293548;
+    --asted-bg-sunken: #151e2d;
+    --asted-shadow-light: #374155;
+    --asted-shadow-dark: #0f172a;
+    --asted-text-primary: #f1f5f9;
+    --asted-text-secondary: #cbd5e1;
+    --asted-text-tertiary: #94a3b8;
+    --asted-text-disabled: #64748b;
+    --asted-border-light: #334155;
+    --asted-border-medium: #475569;
+    --asted-border-dark: #64748b;
+    --asted-primary-500: #60a5fa;
+    --asted-success-500: #34d399;
+    --asted-warning-500: #fbbf24;
+    --asted-danger-500: #f87171;
+    --asted-info-500: #a78bfa;
+  }
+}
+
+/* ============================================
+   RESET & BASE STYLES
+   ============================================ */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  font-family: var(--asted-font-sans);
+  font-size: var(--asted-text-base);
+  line-height: var(--asted-leading-normal);
+  color: var(--asted-text-primary);
+  background-color: var(--asted-bg-base);
+  transition: background-color var(--asted-transition-slow), 
+              color var(--asted-transition-slow);
+}
+
+/* ============================================
+   TYPOGRAPHIE DE BASE
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--asted-font-bold);
+  line-height: var(--asted-leading-tight);
+  color: var(--asted-text-primary);
+  margin-bottom: var(--asted-space-4);
+}
+
+h1 { font-size: var(--asted-text-4xl); }
+h2 { font-size: var(--asted-text-3xl); }
+h3 { font-size: var(--asted-text-2xl); }
+h4 { font-size: var(--asted-text-xl); }
+h5 { font-size: var(--asted-text-lg); }
+h6 { font-size: var(--asted-text-base); }
+
+p {
+  margin-bottom: var(--asted-space-4);
+  color: var(--asted-text-secondary);
+}
+
+a {
+  color: var(--asted-primary-500);
+  text-decoration: none;
+  transition: color var(--asted-transition-fast);
+}
+
+a:hover {
+  color: var(--asted-primary-600);
+  text-decoration: underline;
+}
+
+strong, b {
+  font-weight: var(--asted-font-bold);
+}
+
+em, i {
+  font-style: italic;
+}
+
+code {
+  font-family: var(--asted-font-mono);
+  font-size: 0.9em;
+  padding: 0.125rem 0.25rem;
+  background-color: var(--asted-bg-elevated);
+  border-radius: var(--asted-radius-sm);
+}
+
+/* ============================================
+   FOCUS VISIBLE (ACCESSIBILITÉ)
+   ============================================ */
+
+*:focus-visible {
+  outline: 2px solid var(--asted-primary-500);
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--asted-primary-500);
+  outline-offset: 2px;
+}
+
+/* ============================================
+   UTILITAIRES DE BASE
+   ============================================ */
+
+/* Skip link pour l'accessibilité */
+.asted-skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--asted-primary-500);
+  color: white;
+  padding: var(--asted-space-2) var(--asted-space-4);
+  z-index: 100;
+}
+
+.asted-skip-link:focus {
+  top: 0;
+}
+
+/* Screen reader only */
+.asted-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+
+@keyframes asted-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes asted-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes asted-bounce {
+  0%, 100% {
+    transform: translateY(-25%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+@keyframes asted-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes asted-slide-up {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ============================================
+   RESPONSIVE UTILITIES
+   ============================================ */
+
+.asted-container {
+  width: 100%;
+  max-width: var(--asted-container-xl);
+  margin: 0 auto;
+  padding: 0 var(--asted-space-4);
+}
+
+@media (min-width: 640px) {
+  .asted-container { padding: 0 var(--asted-space-6); }
+}
+
+@media (min-width: 1024px) {
+  .asted-container { padding: 0 var(--asted-space-8); }
+}
+
+/* ============================================
+   PRINT STYLES
+   ============================================ */
+
+@media print {
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
+  
+  a {
+    text-decoration: underline;
+  }
+}
