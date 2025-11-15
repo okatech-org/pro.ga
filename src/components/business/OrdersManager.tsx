@@ -82,7 +82,7 @@ const statusIcons: Record<OrderStatus, typeof Clock> = {
   shipped: Truck,
   delivered: CheckCircle2,
   paid: CheckCircle2,
-  cancelled: X,
+  cancelled: XCircle,
 };
 
 export const OrdersManager = ({
