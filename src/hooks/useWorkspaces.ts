@@ -63,6 +63,7 @@ export const useWorkspaces = () => {
     switchToBusiness,
     getCurrentBusinessWorkspace,
     isLoading: loading,
+    error: context.error,
   };
 };
 

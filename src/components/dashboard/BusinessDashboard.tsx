@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FileText, Calculator, CreditCard, Store, DollarSign, Receipt, TrendingUp, Building2, BarChart3, PieChart } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { NeuButton } from "@/components/ui/neu-button";
 import { NeuIconPill } from "@/components/ui/neu-icon-pill";
 import { NeuCard } from "@/components/ui/neu-card";
@@ -21,44 +19,56 @@ export const BusinessDashboard = () => {
   const navigate = useNavigate();
   const { getCurrentBusinessWorkspace } = useWorkspaces();
   const business = getCurrentBusinessWorkspace();
-  const { invoices, createInvoice, getTotalsSummary } = useInvoices(business?.id);
+  const { invoices, createInvoice, getTotalsSummary, isLoading: invoicesLoading, error: invoicesError } = useInvoices(business?.id);
   const seededRef = useRef(false);
 
   useEffect(() => {
-    if (!business?.id || seededRef.current || invoices.length > 0) return;
+    if (!business?.id || seededRef.current || invoices.length > 0 || invoicesLoading) return;
     seededRef.current = true;
 
     (async () => {
-      await createInvoice({
-        workspaceId: business.id,
-        customerName: "Marie Dupont",
-        currency: "XOF",
-        issuedOn: new Date().toISOString(),
-        status: "ISSUED",
-        lines: [
-          { designation: "Robe wax", quantity: 2, unitPrice: 65000, taxRate: 18 },
-          { designation: "Accessoires", quantity: 1, unitPrice: 35000, taxRate: 18 },
-        ],
-      });
-      await createInvoice({
-        workspaceId: business.id,
-        customerName: "Agence Ebène",
-        currency: "XOF",
-        issuedOn: new Date().toISOString(),
-        status: "ISSUED",
-        lines: [{ designation: "Commande B2B", quantity: 10, unitPrice: 45000, taxRate: 18 }],
-      });
+      try {
+        await createInvoice({
+          workspaceId: business.id,
+          customerName: "Marie Dupont",
+          currency: "XOF",
+          issuedOn: new Date().toISOString(),
+          status: "issued",
+          lines: [
+            { designation: "Robe wax", quantity: 2, unitPrice: 65000, taxRate: 18 },
+            { designation: "Accessoires", quantity: 1, unitPrice: 35000, taxRate: 18 },
+          ],
+        });
+        await createInvoice({
+          workspaceId: business.id,
+          customerName: "Agence Ebène",
+          currency: "XOF",
+          issuedOn: new Date().toISOString(),
+          status: "issued",
+          lines: [{ designation: "Commande B2B", quantity: 10, unitPrice: 45000, taxRate: 18 }],
+        });
+      } catch (error) {
+        console.error("Erreur lors de l'initialisation des factures:", error);
+      }
     })();
-  }, [business?.id, invoices.length, createInvoice]);
+  }, [business?.id, invoices.length, invoicesLoading, createInvoice]);
 
   if (!business) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle>Pas d'espace entreprise</CardTitle>
-          <CardDescription>Ajoutez une activité professionnelle pour voir ce module.</CardDescription>
-        </CardHeader>
-      </Card>
+      <NeuCard className="p-6 sm:p-8 text-center">
+        <div className="max-w-md mx-auto space-y-4">
+          <Building2 className="w-16 h-16 text-muted-foreground/40 mx-auto" />
+          <div>
+            <h3 className="text-lg sm:text-xl font-bold text-slate-900 mb-2">Pas d'espace entreprise</h3>
+            <p className="text-sm text-muted-foreground mb-4">
+              Ajoutez une activité professionnelle pour voir ce module.
+            </p>
+            <NeuButton variant="premium" onClick={() => navigate("/onboarding")}>
+              Créer un espace entreprise
+            </NeuButton>
+          </div>
+        </div>
+      </NeuCard>
     );
   }
 
@@ -275,21 +285,43 @@ export const BusinessDashboard = () => {
             ) : (
               <>
                 {invoices.slice(0, 3).map((invoice) => (
-                  <div key={invoice.id} className="rounded-xl bg-gray-50 px-3 sm:px-4 py-2.5 sm:py-3 hover:bg-gray-100 transition-colors cursor-pointer">
+                  <div
+                    key={invoice.id}
+                    className="rounded-xl bg-gray-50 px-3 sm:px-4 py-2.5 sm:py-3 hover:bg-gray-100 transition-colors cursor-pointer"
+                    onClick={() => navigate(`/dashboard/business/factures?invoice=${invoice.id}`)}
+                  >
                     <div className="flex items-center justify-between mb-1.5 sm:mb-2 gap-2">
-                      <p className="font-semibold text-xs sm:text-sm text-slate-900 truncate flex-1 min-w-0">{invoice.numero}</p>
+                      <p className="font-semibold text-xs sm:text-sm text-slate-900 truncate flex-1 min-w-0">
+                        {invoice.invoiceNumber}
+                      </p>
                       <span className={`text-[10px] sm:text-xs font-medium px-2 sm:px-3 py-0.5 sm:py-1 rounded-full flex-shrink-0 whitespace-nowrap ${
-                        invoice.status === "PAID" 
+                        invoice.status === "paid" 
                           ? "text-success bg-success/10" 
-                          : invoice.status === "ISSUED"
+                          : invoice.status === "issued"
                           ? "text-warning bg-warning/10"
+                          : invoice.status === "sent"
+                          ? "text-info bg-info/10"
+                          : invoice.status === "overdue"
+                          ? "text-destructive bg-destructive/10"
                           : "text-muted-foreground bg-muted/10"
                       }`}>
-                        {invoice.status === "PAID" ? "Payée" : invoice.status === "ISSUED" ? "Émise" : "Brouillon"}
+                        {invoice.status === "paid" 
+                          ? "Payée" 
+                          : invoice.status === "issued" 
+                          ? "Émise"
+                          : invoice.status === "sent"
+                          ? "Envoyée"
+                          : invoice.status === "overdue"
+                          ? "En retard"
+                          : "Brouillon"}
                       </span>
                     </div>
-                    <p className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1 truncate">{invoice.customerName}</p>
-                    <p className="text-xs sm:text-sm font-bold text-primary truncate">{currency.format(invoice.totals.ttc)}</p>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1 truncate">
+                      {invoice.customerName}
+                    </p>
+                    <p className="text-xs sm:text-sm font-bold text-primary truncate">
+                      {currency.format(invoice.totals.ttc)} {invoice.currency}
+                    </p>
                   </div>
                 ))}
                 <NeuButton 

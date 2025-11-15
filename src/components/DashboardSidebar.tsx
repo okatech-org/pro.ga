@@ -148,6 +148,7 @@ export const DashboardSidebar = () => {
             </div>
             
             <button
+              type="button"
               onClick={async () => {
                 try {
                   clearDemoModeState();
@@ -155,11 +156,14 @@ export const DashboardSidebar = () => {
                   toast.success("Déconnexion effectuée");
                   navigate("/auth");
                 } catch (error) {
-                  console.error(error);
-                  toast.error("Impossible de se déconnecter");
+                  const errorMessage =
+                    error instanceof Error ? error.message : "Impossible de se déconnecter";
+                  console.error("Erreur lors de la déconnexion:", error);
+                  toast.error(errorMessage);
                 }
               }}
               className="w-full flex items-center gap-4 px-4 py-3 text-base text-slate-900 hover:bg-white/40 rounded-xl transition-all duration-200"
+              aria-label="Se déconnecter"
             >
               <LogOut className="w-5 h-5 flex-shrink-0 stroke-[1.8]" />
               <span className="truncate">Déconnexion</span>

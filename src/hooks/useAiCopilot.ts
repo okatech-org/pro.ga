@@ -77,6 +77,7 @@ export const useAiCopilot = (workspaceId?: string | null) => {
   const [messages, setMessages] = useState<AiMessage[]>([]);
   const [currentJob, setCurrentJob] = useState<AiJob | null>(null);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     if (!workspaceId) {
@@ -108,22 +109,32 @@ export const useAiCopilot = (workspaceId?: string | null) => {
   const uploadDocuments = useCallback(
     async (files: FileList | File[]) => {
       if (!workspaceId) {
-        throw new Error("Selectionnez un workspace avant dépôt.");
+        const err = "Sélectionnez un workspace avant dépôt.";
+        setError(err);
+        throw new Error(err);
       }
       setLoading(true);
-      const fileArray = Array.from(files);
-      const uploads: AiDocumentUpload[] = fileArray.map((file) => ({
-        id: generateId(),
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        status: "uploaded",
-      }));
-      const nextDocuments = [...documents, ...uploads];
-      setDocuments(nextDocuments);
-      persist({ documents: nextDocuments });
-      setLoading(false);
-      return uploads;
+      setError(null);
+      try {
+        const fileArray = Array.from(files);
+        const uploads: AiDocumentUpload[] = fileArray.map((file) => ({
+          id: generateId(),
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          status: "uploaded",
+        }));
+        const nextDocuments = [...documents, ...uploads];
+        setDocuments(nextDocuments);
+        persist({ documents: nextDocuments });
+        setLoading(false);
+        return uploads;
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "Erreur lors du téléversement";
+        setError(errorMessage);
+        setLoading(false);
+        throw err;
+      }
     },
     [workspaceId, documents, persist],
   );
@@ -139,76 +150,114 @@ export const useAiCopilot = (workspaceId?: string | null) => {
 
   const startExtraction = useCallback(async () => {
     if (!workspaceId || documents.length === 0) {
-      throw new Error("Ajoutez des documents avant extraction.");
+      const err = "Ajoutez des documents avant extraction.";
+      setError(err);
+      throw new Error(err);
     }
     setLoading(true);
-    const job: AiJob = {
-      id: generateId(),
-      workspaceId,
-      status: "running",
-      type: "extraction",
-      documents: documents.map((doc) => doc.id),
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    setCurrentJob(job);
-    persist({ lastJob: job });
+    setError(null);
+    try {
+      const job: AiJob = {
+        id: generateId(),
+        workspaceId,
+        status: "running",
+        type: "extraction",
+        documents: documents.map((doc) => doc.id),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+      };
+      setCurrentJob(job);
+      persist({ lastJob: job });
 
-    // Simule un appel backend
-    await new Promise((resolve) => setTimeout(resolve, 1200));
-    const extractionBases = fakeExtraction(documents);
+      // Simule un appel backend
+      await new Promise((resolve) => setTimeout(resolve, 1200));
+      const extractionBases = fakeExtraction(documents);
 
-    const completedJob: AiJob = {
-      ...job,
-      status: "completed",
-      updatedAt: new Date().toISOString(),
-      extraction: {
-        taxes: extractionBases,
-        summary: "Synthèse générée automatiquement par PRO.GA Copilot.",
-        keywords: ["TVA", "CSS", "IS/IMF"],
-      },
-    };
+      const completedJob: AiJob = {
+        ...job,
+        status: "completed",
+        updatedAt: new Date().toISOString(),
+        extraction: {
+          taxes: extractionBases,
+          summary: "Synthèse générée automatiquement par PRO.GA Copilot.",
+          keywords: ["TVA", "CSS", "IS/IMF"],
+        },
+      };
 
-    setCurrentJob(completedJob);
-    const assistantMessage = makeMessage(
-      "assistant",
-      "Analyse effectuée. Bases fiscales mises à jour dans le module Taxes.",
-    );
-    const nextMessages = [...messages, assistantMessage];
-    setMessages(nextMessages);
-    persist({ lastJob: completedJob, messages: nextMessages });
-    setLoading(false);
-    return completedJob;
+      setCurrentJob(completedJob);
+      const assistantMessage = makeMessage(
+        "assistant",
+        "Analyse effectuée. Bases fiscales mises à jour dans le module Taxes.",
+      );
+      const nextMessages = [...messages, assistantMessage];
+      setMessages(nextMessages);
+      persist({ lastJob: completedJob, messages: nextMessages });
+      setLoading(false);
+      return completedJob;
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Erreur lors de l'extraction";
+      setError(errorMessage);
+      setLoading(false);
+      throw err;
+    }
   }, [workspaceId, documents, messages, persist]);
 
   const askQuestion = useCallback(
     async (question: string) => {
-      if (!question.trim()) return;
-      const userMessage = makeMessage("user", question);
-      const nextMessages = [...messages, userMessage];
-      setMessages(nextMessages);
-      persist({ messages: nextMessages });
+      if (!question.trim()) {
+        const err = "Veuillez saisir une question.";
+        setError(err);
+        throw new Error(err);
+      }
+      setLoading(true);
+      setError(null);
+      try {
+        const userMessage = makeMessage("user", question);
+        const nextMessages = [...messages, userMessage];
+        setMessages(nextMessages);
+        persist({ messages: nextMessages });
 
-      // Simule une réponse IA
-      await new Promise((resolve) => setTimeout(resolve, 600));
-      const answer = makeMessage(
-        "assistant",
-        "Je recommande d'exporter les écritures d'ici vendredi pour respecter l'échéance CSS.",
-      );
-      const finalMessages = [...nextMessages, answer];
-      setMessages(finalMessages);
-      persist({ messages: finalMessages });
-      return answer;
+        // Simule une réponse IA
+        await new Promise((resolve) => setTimeout(resolve, 600));
+        const answer = makeMessage(
+          "assistant",
+          "Je recommande d'exporter les écritures d'ici vendredi pour respecter l'échéance CSS.",
+        );
+        const finalMessages = [...nextMessages, answer];
+        setMessages(finalMessages);
+        persist({ messages: finalMessages });
+        setLoading(false);
+        return answer;
+      } catch (err) {
+        const errorMessage = err instanceof Error ? err.message : "Erreur lors de l'envoi de la question";
+        setError(errorMessage);
+        setLoading(false);
+        throw err;
+      }
     },
     [messages, persist],
   );
 
   const reset = useCallback(() => {
-    setDocuments([]);
-    setMessages([]);
-    setCurrentJob(null);
-    persist({ documents: [], messages: [], lastJob: null });
+    setLoading(true);
+    setError(null);
+    try {
+      setDocuments([]);
+      setMessages([]);
+      setCurrentJob(null);
+      persist({ documents: [], messages: [], lastJob: null });
+      setLoading(false);
+    } catch (err) {
+      const errorMessage = err instanceof Error ? err.message : "Erreur lors de la réinitialisation";
+      setError(errorMessage);
+      setLoading(false);
+      throw err;
+    }
   }, [persist]);
+
+  const clearError = useCallback(() => {
+    setError(null);
+  }, []);
 
   const stats = useMemo(
     () => ({
@@ -224,12 +273,14 @@ export const useAiCopilot = (workspaceId?: string | null) => {
     messages,
     currentJob,
     loading,
+    error,
     stats,
     uploadDocuments,
     removeDocument,
     startExtraction,
     askQuestion,
     reset,
+    clearError,
   };
 };
 

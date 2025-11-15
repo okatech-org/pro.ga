@@ -28,7 +28,8 @@ export type EmploymentContractFormValues = z.infer<typeof contractSchema>;
 
 type EmploymentContractFormProps = {
   defaultValues?: Partial<EmploymentContractFormValues>;
-  onSubmit?: (values: EmploymentContractFormValues) => void;
+  onSubmit?: (values: EmploymentContractFormValues) => void | Promise<void>;
+  onCancel?: () => void;
   submitting?: boolean;
 };
 
@@ -43,7 +44,8 @@ const CONTRACT_OPTIONS: { value: EmploymentContractType; label: string }[] = [
 export const EmploymentContractForm = ({
   defaultValues,
   onSubmit,
-  submitting,
+  onCancel,
+  submitting = false,
 }: EmploymentContractFormProps) => {
   const form = useForm<EmploymentContractFormValues>({
     resolver: zodResolver(contractSchema),
@@ -58,15 +60,40 @@ export const EmploymentContractForm = ({
     },
   });
 
-  const handleSubmit = (values: EmploymentContractFormValues) => {
-    onSubmit?.(values);
+  const handleSubmit = async (values: EmploymentContractFormValues) => {
+    if (submitting) return;
+    try {
+      await onSubmit?.(values);
+      if (!defaultValues) {
+        form.reset({
+          employeeName: "",
+          role: "",
+          contractType: "household",
+          hourlyRate: 1500,
+          weeklyHours: 20,
+          startDate: new Date().toISOString().slice(0, 10),
+        });
+      }
+    } catch (err) {
+      console.error("Error submitting form:", err);
+    }
+  };
+
+  const handleCancel = () => {
+    if (submitting) return;
+    form.reset();
+    onCancel?.();
   };
 
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Créer un contrat</CardTitle>
-        <CardDescription>Formalisez un nouveau contrat emploi à domicile.</CardDescription>
+        <CardTitle>{defaultValues ? "Modifier le contrat" : "Créer un contrat"}</CardTitle>
+        <CardDescription>
+          {defaultValues
+            ? "Modifiez les informations du contrat emploi à domicile."
+            : "Formalisez un nouveau contrat emploi à domicile."}
+        </CardDescription>
       </CardHeader>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
@@ -78,7 +105,7 @@ export const EmploymentContractForm = ({
                 <FormItem>
                   <FormLabel>Nom complet</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nom du salarié" {...field} />
+                    <Input placeholder="Nom du salarié" disabled={submitting} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -92,7 +119,7 @@ export const EmploymentContractForm = ({
                 <FormItem>
                   <FormLabel>Fonction</FormLabel>
                   <FormControl>
-                    <Input placeholder="Fonction principale" {...field} />
+                    <Input placeholder="Fonction principale" disabled={submitting} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -105,7 +132,7 @@ export const EmploymentContractForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Type de contrat</FormLabel>
-                  <Select value={field.value} onValueChange={field.onChange}>
+                  <Select value={field.value} onValueChange={field.onChange} disabled={submitting}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Choisir" />
@@ -131,7 +158,7 @@ export const EmploymentContractForm = ({
                 <FormItem>
                   <FormLabel>Taux horaire (FCFA)</FormLabel>
                   <FormControl>
-                    <Input type="number" min={0} step="100" {...field} />
+                    <Input type="number" min={0} step="100" disabled={submitting} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -145,7 +172,7 @@ export const EmploymentContractForm = ({
                 <FormItem>
                   <FormLabel>Heures hebdomadaires</FormLabel>
                   <FormControl>
-                    <Input type="number" min={1} step="1" {...field} />
+                    <Input type="number" min={1} step="1" disabled={submitting} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -159,7 +186,7 @@ export const EmploymentContractForm = ({
                 <FormItem>
                   <FormLabel>Date de début</FormLabel>
                   <FormControl>
-                    <Input type="date" {...field} />
+                    <Input type="date" disabled={submitting} {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -167,9 +194,29 @@ export const EmploymentContractForm = ({
             />
           </CardContent>
 
-          <CardFooter className="flex justify-end gap-2">
-            <Button type="submit" disabled={submitting}>
-              Enregistrer
+          <CardFooter className="flex flex-col sm:flex-row justify-end gap-2">
+            {onCancel && (
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleCancel}
+                disabled={submitting}
+                className="w-full sm:w-auto"
+              >
+                Annuler
+              </Button>
+            )}
+            <Button type="submit" disabled={submitting} className="w-full sm:w-auto">
+              {submitting ? (
+                <>
+                  <span className="mr-2">⏳</span>
+                  Enregistrement...
+                </>
+              ) : defaultValues ? (
+                "Mettre à jour"
+              ) : (
+                "Enregistrer"
+              )}
             </Button>
           </CardFooter>
         </form>

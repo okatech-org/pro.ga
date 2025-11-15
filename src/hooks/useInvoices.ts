@@ -137,7 +137,7 @@ export const useInvoices = (workspaceId?: string | null) => {
         invoiceNumber: invoiceData.invoiceNumber ?? nextInvoiceNumber(nextSequence),
         lines,
         totals,
-        status: invoiceData.status ?? "DRAFT",
+        status: invoiceData.status ?? "draft",
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
@@ -184,7 +184,7 @@ export const useInvoices = (workspaceId?: string | null) => {
 
   const markAsPaid = useCallback(
     async (id: string) => {
-      await updateInvoice(id, { status: "PAID" });
+      await updateInvoice(id, { status: "paid" });
     },
     [updateInvoice],
   );
@@ -201,7 +201,7 @@ export const useInvoices = (workspaceId?: string | null) => {
         totalTva: acc.totalTva + invoice.totals.tax,
         totalTtc: acc.totalTtc + invoice.totals.ttc,
         count: acc.count + 1,
-        paidCount: acc.paidCount + (invoice.status === "PAID" ? 1 : 0),
+        paidCount: acc.paidCount + (invoice.status === "paid" ? 1 : 0),
       }),
       { totalHt: 0, totalTva: 0, totalTtc: 0, count: 0, paidCount: 0 },
     );

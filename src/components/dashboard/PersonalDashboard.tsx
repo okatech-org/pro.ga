@@ -1,8 +1,6 @@
 import { useEffect, useMemo, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus, FileText, Upload, Users, Calendar, Calculator, DollarSign, FolderOpen, TrendingUp, Activity } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { NeuButton } from "@/components/ui/neu-button";
 import { NeuIconPill } from "@/components/ui/neu-icon-pill";
 import { NeuCard } from "@/components/ui/neu-card";
@@ -29,38 +27,42 @@ export const PersonalDashboard = () => {
   const navigate = useNavigate();
   const { currentWorkspace, person, isPersonalSpace } = useWorkspaces();
   const workspaceId = currentWorkspace?.id;
-  const { contracts, stats, addContract } = useHouseholdEmployment(workspaceId);
-  const { documents } = useDocuments(workspaceId);
+  const { contracts, stats, addContract, loading: contractsLoading, error: contractsError } = useHouseholdEmployment(workspaceId);
+  const { documents, isLoading: documentsLoading } = useDocuments(workspaceId);
   const { computeIRPP } = useTaxEngine();
   const seededRef = useRef(false);
 
   useEffect(() => {
-    if (!isPersonalSpace || !workspaceId || seededRef.current || contracts.length > 0) return;
+    if (!isPersonalSpace || !workspaceId || seededRef.current || contracts.length > 0 || contractsLoading) return;
     seededRef.current = true;
 
     (async () => {
-      await addContract({
-        workspaceId,
-        employeeName: "Nounou - Awa",
-        role: "Assistante familiale",
-        contractType: "nanny",
-        hourlyRate: 2500,
-        weeklyHours: 40,
-        startDate: new Date().toISOString().split("T")[0],
-        status: "active",
-      });
-      await addContract({
-        workspaceId,
-        employeeName: "Chauffeur - Léon",
-        role: "Chauffeur",
-        contractType: "driver",
-        hourlyRate: 3000,
-        weeklyHours: 35,
-        startDate: new Date().toISOString().split("T")[0],
-        status: "active",
-      });
+      try {
+        await addContract({
+          workspaceId,
+          employeeName: "Nounou - Awa",
+          role: "Assistante familiale",
+          contractType: "nanny",
+          hourlyRate: 2500,
+          weeklyHours: 40,
+          startDate: new Date().toISOString().split("T")[0],
+          status: "active",
+        });
+        await addContract({
+          workspaceId,
+          employeeName: "Chauffeur - Léon",
+          role: "Chauffeur",
+          contractType: "driver",
+          hourlyRate: 3000,
+          weeklyHours: 35,
+          startDate: new Date().toISOString().split("T")[0],
+          status: "active",
+        });
+      } catch (error) {
+        console.error("Erreur lors de l'initialisation des contrats:", error);
+      }
     })();
-  }, [isPersonalSpace, workspaceId, contracts.length, addContract]);
+  }, [isPersonalSpace, workspaceId, contracts.length, contractsLoading, addContract]);
 
   const irppResult = useMemo(() => {
     const base = 12_000_000;
