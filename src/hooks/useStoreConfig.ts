@@ -90,7 +90,7 @@ export const useStoreConfig = (workspaceId?: string | null) => {
         .update({
           has_eshop: nextConfig.published,
           eshop_name: nextConfig.slug,
-          activity_type: nextConfig.metadata?.category || null,
+          activity_type: (nextConfig.metadata?.category as string) || null,
           // city or address columns may not exist in schema; guard is handled at db level.
         })
         .eq("id", workspaceId);

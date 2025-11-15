@@ -40,34 +40,25 @@ const generateId = () => {
 };
 
 const fakeExtraction = (documents: AiDocumentUpload[]): TaxBases => {
-  const base = documents.reduce(
-    (acc, doc) => acc + Math.round(doc.size / 100_000) * 100_000,
+  const base = Math.min(
+    documents.reduce(
+      (acc, doc) => acc + Math.round(doc.size / 100_000) * 100_000,
+      2_000_000,
+    ),
     2_000_000,
   );
   return {
-    periode: { debut: new Date(), fin: new Date() },
     tva: {
-      collectee: Math.round(base * 0.18),
+      collected: Math.round(base * 0.18),
       deductible: Math.round(base * 0.04),
-      due: Math.round(base * 0.14),
     },
     css: {
-      baseHT: base,
+      base: base,
       exclusions: Math.round(base * 0.1),
-      montant: Math.round(base * 0.01),
-    },
-    isImf: {
-      resultatFiscal: Math.round(base * 0.25),
-      caHTAnnuel: base,
-      isTheorique: Math.round(base * 0.0625),
-      imf: Math.round(base * 0.0075),
-      retenu: Math.round(base * 0.0625),
     },
     irpp: {
-      baseImposable: Math.round(base * 0.3),
-      quotientFamilial: 1.5,
-      impot: Math.round(base * 0.045),
-      tauxEffectif: 0.15,
+      base: Math.round(base * 0.3),
+      quotient: 1.5,
     },
   };
 };

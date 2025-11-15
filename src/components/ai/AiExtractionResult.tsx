@@ -70,24 +70,21 @@ export const AiExtractionResult = ({ summary, loading }: AiExtractionResultProps
               </div>
             </div>
 
-            {summary?.summary && (
+            {summary?.notes && (
               <div className="neu-inset rounded-xl p-4 mb-4 bg-primary/5 border-primary/20">
                 <p className="text-xs sm:text-sm text-slate-900 leading-relaxed whitespace-pre-wrap break-words">
-                  {summary.summary}
+                  {summary.notes}
                 </p>
               </div>
             )}
 
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
-              <ExtractionCard title="TVA collectée" value={formatCurrency(taxes?.tva?.collectee)} />
+              <ExtractionCard title="TVA collectée" value={formatCurrency(taxes?.tva?.collected)} />
               <ExtractionCard title="TVA déductible" value={formatCurrency(taxes?.tva?.deductible)} />
-              <ExtractionCard title="TVA due" value={formatCurrency(taxes?.tva?.due)} />
-              <ExtractionCard title="CSS base" value={formatCurrency(taxes?.css?.baseHT)} />
-              <ExtractionCard title="CSS montant" value={formatCurrency(taxes?.css?.montant)} />
-              <ExtractionCard title="IS Base" value={formatCurrency(taxes?.isImf?.resultatFiscal)} />
-              <ExtractionCard title="IRPP Base" value={formatCurrency(taxes?.irpp?.baseImposable)} />
-              <ExtractionCard title="IRPP Impôt" value={formatCurrency(taxes?.irpp?.impot)} />
-              <ExtractionCard title="IRPP Quotient" value={(taxes?.irpp?.quotientFamilial ?? 1).toString()} />
+              <ExtractionCard title="CSS base" value={formatCurrency(taxes?.css?.base)} />
+              <ExtractionCard title="CSS exclusions" value={formatCurrency(taxes?.css?.exclusions)} />
+              <ExtractionCard title="IRPP Base" value={formatCurrency(taxes?.irpp?.base)} />
+              <ExtractionCard title="IRPP Quotient" value={(taxes?.irpp?.quotient ?? 1).toString()} />
             </div>
 
             <div className="space-y-3 pt-4 border-t border-border">

@@ -34,8 +34,7 @@ import {
   Clock,
   Truck,
 } from "lucide-react";
-import type { StoreOrder } from "@/types/domain";
-import type { OrderStatus } from "@/hooks/useStoreOrders";
+import type { StoreOrder, OrderStatus } from "@/types/domain";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -62,6 +61,7 @@ const statusLabels: Record<OrderStatus, string> = {
   processing: "En traitement",
   shipped: "Expédiée",
   delivered: "Livrée",
+  paid: "Payée",
   cancelled: "Annulée",
 };
 
@@ -71,6 +71,7 @@ const statusColors: Record<OrderStatus, string> = {
   processing: "bg-purple-500/10 text-purple-700 border-purple-500/20",
   shipped: "bg-indigo-500/10 text-indigo-700 border-indigo-500/20",
   delivered: "bg-green-500/10 text-green-700 border-green-500/20",
+  paid: "bg-green-600/10 text-green-800 border-green-600/20",
   cancelled: "bg-red-500/10 text-red-700 border-red-500/20",
 };
 
@@ -80,7 +81,8 @@ const statusIcons: Record<OrderStatus, typeof Clock> = {
   processing: Package,
   shipped: Truck,
   delivered: CheckCircle2,
-  cancelled: XCircle,
+  paid: CheckCircle2,
+  cancelled: X,
 };
 
 export const OrdersManager = ({

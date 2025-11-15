@@ -66,9 +66,9 @@ export const PersonalDashboard = () => {
 
   const irppResult = useMemo(() => {
     const base = 12_000_000;
-    const quotient = person?.foyerInfo?.quotientFamilial ?? 1;
+    const quotient = 1;
     return computeIRPP(base, quotient);
-  }, [person?.foyerInfo?.quotientFamilial, computeIRPP]);
+  }, [computeIRPP]);
 
   const kpis = [
     {
@@ -308,7 +308,7 @@ export const PersonalDashboard = () => {
                 <div className="min-w-0 flex-1">
                   <h3 className="font-bold text-base sm:text-lg text-slate-900 truncate">Simulation IRPP</h3>
                   <p className="text-[10px] sm:text-xs text-muted-foreground truncate">
-                    Quotient familial : {person?.foyerInfo?.quotientFamilial ?? 1} parts
+                    Quotient familial : 1 part
                   </p>
                 </div>
               </div>
