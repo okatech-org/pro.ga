@@ -91,18 +91,18 @@ export const DashboardSidebar = () => {
       <div className="h-full flex flex-col gap-6 p-6 pl-7 pr-6 pb-6 overflow-visible">
         {/* Header */}
         <SidebarHeader className="p-0">
-          <NeuCard className="p-5">
-            <div className="flex items-center gap-3">
-              <div className={`w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0 ${
+          <NeuCard className="p-6">
+            <div className="flex items-center gap-4">
+              <div className={`w-16 h-16 rounded-[20px] flex items-center justify-center shadow-lg flex-shrink-0 ${
                 isPersonalSpace 
-                  ? "bg-gradient-to-br from-blue-400 to-blue-600" 
+                  ? "bg-gradient-to-br from-[#4A90E2] to-[#357ABD]" 
                   : "bg-gradient-to-br from-green-400 to-green-600"
               }`}>
-                <Building2 className="w-6 h-6 text-white" />
+                <Building2 className="w-8 h-8 text-white" />
               </div>
               <div className="flex-1 min-w-0">
-                <h2 className="text-base font-bold text-slate-900 leading-tight truncate">PRO.GA</h2>
-                <p className="text-xs text-slate-500 truncate">
+                <h2 className="text-2xl font-bold text-slate-900 leading-tight truncate">PRO.GA</h2>
+                <p className="text-sm text-slate-500 truncate mt-0.5">
                   {isPersonalSpace ? "Espace Personnel" : "Espace Entreprise"}
                 </p>
               </div>
