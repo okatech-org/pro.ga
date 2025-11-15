@@ -59,9 +59,6 @@ const App = () => (
             {/* Admin */}
             <Route path="/admin" element={<AdminDashboard />} />
             
-            {/* Boutique publique */}
-            <Route path="/store/:slug" element={<StorePublicPage />} />
-            
             {/* Demo & Admin */}
             <Route path="/demo" element={<Demo />} />
             <Route path="/admin-ga-demo" element={<AdminGaDemo />} />
@@ -69,6 +66,10 @@ const App = () => (
             <Route path="/neu-demo" element={<NeuDemo />} />
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+            
+            {/* Boutiques publiques - doit être avant le catch-all */}
+            <Route path="/:slug" element={<StorePublicPage />} />
+            
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
