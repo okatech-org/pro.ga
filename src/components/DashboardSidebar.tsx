@@ -111,28 +111,30 @@ export const DashboardSidebar = () => {
         </SidebarHeader>
 
         {/* Menu Content */}
-        <SidebarContent className="flex-1 overflow-y-auto overflow-x-visible space-y-6 py-4 pr-2 pl-0">
-          {menuSections.map((section, idx) => (
-            <div key={idx} className="space-y-3">
-              <h3 className="px-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-400">
-                {section.label}
-              </h3>
-              <NeuCard className="p-5 space-y-2">
-                {section.items.map((item) => (
-                  <NavLink
-                    key={item.href}
-                    to={item.href}
-                    end={item.href === "/dashboard"}
-                    className="flex items-center gap-4 px-4 py-3 text-base font-normal text-slate-900 hover:bg-white/40 rounded-xl transition-all duration-200"
-                    activeClassName=""
-                  >
-                    <item.icon className="w-5 h-5 flex-shrink-0 stroke-[1.8]" />
-                    <span className="truncate flex-1 min-w-0">{item.label}</span>
-                  </NavLink>
-                ))}
-              </NeuCard>
-            </div>
-          ))}
+        <SidebarContent className="flex-1 overflow-y-auto overflow-x-visible py-4 pr-2 pl-0">
+          <NeuCard className="p-5 space-y-6">
+            {menuSections.map((section, idx) => (
+              <div key={idx} className="space-y-2">
+                <h3 className="px-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-400">
+                  {section.label}
+                </h3>
+                <div className="space-y-1">
+                  {section.items.map((item) => (
+                    <NavLink
+                      key={item.href}
+                      to={item.href}
+                      end={item.href === "/dashboard"}
+                      className="flex items-center gap-4 px-4 py-3 text-base font-normal text-slate-900 hover:bg-white/40 rounded-xl transition-all duration-200"
+                      activeClassName=""
+                    >
+                      <item.icon className="w-5 h-5 flex-shrink-0 stroke-[1.8]" />
+                      <span className="truncate flex-1 min-w-0">{item.label}</span>
+                    </NavLink>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </NeuCard>
         </SidebarContent>
 
         {/* Footer */}
