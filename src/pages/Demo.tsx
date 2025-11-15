@@ -25,7 +25,8 @@ import {
   ArrowRight,
   TrendingUp,
   FileText,
-  Calculator
+  Calculator,
+  type LucideIcon,
 } from "lucide-react";
 
 interface WorkflowStep {
@@ -42,7 +43,7 @@ interface DemoData {
 
 interface DemoAccountProps {
   accountType: string;
-  icon: React.ReactNode;
+  icon: LucideIcon;
   title: string;
   category: string;
   description: string;
@@ -77,7 +78,7 @@ const DemoAccountCard = ({
   return (
     <NeuCard className="p-6 hover:scale-105 transition-all">
       <NeuIconPill 
-        icon={icon.type} 
+        icon={icon} 
         color={getIconColor()} 
         size="lg" 
         className="mb-4"
@@ -286,7 +287,7 @@ const Demo = () => {
   const demoAccounts: DemoAccountProps[] = [
     {
       accountType: "admin",
-      icon: <Shield className="w-8 h-8 text-destructive" />,
+      icon: Shield,
       title: "Admin Système",
       category: "SYSTÈME",
       description: "Supervisez l’ensemble de l’écosystème PRO.GA : monitorings temps réel, audit des workspaces et gestion du support.",
@@ -337,7 +338,7 @@ const Demo = () => {
     },
     {
       accountType: "individual",
-      icon: <User className="w-8 h-8 text-primary" />,
+      icon: User,
       title: "Particulier",
       category: "ESPACE PERSO",
       description: "Déclarer ses revenus, simuler l’IRPP et gérer l’emploi à domicile dans la même interface.",
@@ -385,7 +386,7 @@ const Demo = () => {
     },
     {
       accountType: "clothing_store",
-      icon: <ShoppingBag className="w-8 h-8 text-primary" />,
+      icon: ShoppingBag,
       title: "Boutique de Vêtements",
       category: "COMMERCE",
       description: "Créez votre boutique {slug}.pro.ga, synchronisez POS et stock, encaissez en Mobile Money.",
@@ -437,7 +438,7 @@ const Demo = () => {
     },
     {
       accountType: "salon",
-      icon: <Scissors className="w-8 h-8 text-success" />,
+      icon: Scissors,
       title: "Salon Coiffure & Beauté",
       category: "SERVICES",
       description: "Planning en ligne, CRM clients et encaissement POS pour salons de beauté/coiffure.",
@@ -489,7 +490,7 @@ const Demo = () => {
     },
     {
       accountType: "fruit_veg",
-      icon: <Apple className="w-8 h-8 text-success" />,
+      icon: Apple,
       title: "Vente Fruits & Légumes",
       category: "ARTISANAL",
       description: "Vendez vos produits frais avec catalogue saisonnier, gestion de lots et tournées de livraison.",
@@ -541,7 +542,7 @@ const Demo = () => {
     },
     {
       accountType: "restaurant",
-      icon: <UtensilsCrossed className="w-8 h-8 text-warning" />,
+      icon: UtensilsCrossed,
       title: "Restaurant",
       category: "RESTAURATION",
       description: "Menu digital, commandes à emporter, POS salle et comptabilité restauration.",
@@ -593,7 +594,7 @@ const Demo = () => {
     },
     {
       accountType: "services",
-      icon: <Briefcase className="w-8 h-8 text-primary" />,
+      icon: Briefcase,
       title: "Prestations Services Divers",
       category: "SERVICES PRO",
       description: "Consultants, artisans, freelances : pipeline devis → mission → facture → export fiscal.",
@@ -645,7 +646,7 @@ const Demo = () => {
     },
     {
       accountType: "multi_activity",
-      icon: <Building2 className="w-8 h-8 text-warning" />,
+      icon: Building2,
       title: "PME Multi-activités",
       category: "ENTREPRISE",
       description: "Groupes multi-activités : workspaces par BU, équipes distinctes, consolidation SYSCOHADA.",

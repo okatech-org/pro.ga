@@ -17,7 +17,7 @@ const mapWorkspaceRow = (row: Tables<"workspaces">): Workspace => ({
   name: row.name,
   slug: row.eshop_name || slugify(row.name),
   scope: row.type === "personal" ? "personal" : "business",
-  type: (row.type as Workspace["type"]) || "other",
+  type: (row.type as WorkspaceType) || ("other" as WorkspaceType),
   status: "active",
   ownerId: row.owner_id,
   businessName: row.business_name,
@@ -28,8 +28,8 @@ const mapWorkspaceRow = (row: Tables<"workspaces">): Workspace => ({
   city: null,
   country: null,
   metadata: undefined,
-  createdAt: row.created_at,
-  updatedAt: row.updated_at,
+  createdAt: row.created_at || new Date().toISOString(),
+  updatedAt: row.updated_at || new Date().toISOString(),
 });
 
 export type CreateWorkspaceInput = {
@@ -103,7 +103,7 @@ export const useWorkspaceData = (userId?: string | null, options?: WorkspaceData
           name: input.name,
           slug: input.eshopName || slugify(input.name),
           scope: input.scope === "personal" ? "personal" : "business",
-          type: input.type || "services",
+          type: (input.type || "services") as WorkspaceType,
           status: "active",
           ownerId: demoOwnerId,
           businessName: input.businessName ?? null,

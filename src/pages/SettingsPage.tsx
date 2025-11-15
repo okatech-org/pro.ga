@@ -87,7 +87,7 @@ const SettingsPage = () => {
         .select("id, name, slug, scope")
         .eq("owner_id", session.user.id);
 
-      if (workspacesData) {
+      if (workspacesData && Array.isArray(workspacesData) && !workspacesData.some((ws: any) => ws.error)) {
         setWorkspaces(workspacesData as Workspace[]);
       }
     } catch (error) {

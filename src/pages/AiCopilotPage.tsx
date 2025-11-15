@@ -414,7 +414,7 @@ const AiCopilotPage = () => {
                 )}
                 <AiQuestionnaire
                   messages={messages}
-                  onAsk={handleAskQuestion}
+                  onSubmit={handleAskQuestion}
                   busy={loading}
                   maxLength={1000}
                 />

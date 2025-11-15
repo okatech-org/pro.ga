@@ -71,14 +71,14 @@ export const useDocuments = (workspaceId?: string | null) => {
         uploads.push({
           id: crypto.randomUUID(),
           workspaceId,
-          type: "AUTRE",
-          filename: file.name,
-          mimeType: file.type || "application/octet-stream",
-          url: URL.createObjectURL(file),
-          sha256: hash,
-          ocrText: undefined,
+          category: "other",
+          title: file.name,
+          status: "draft",
+          size: file.size,
+          storagePath: URL.createObjectURL(file),
+          hash,
           tags: [],
-          createdAt: new Date(),
+          createdAt: new Date().toISOString(),
         });
       }
 
@@ -111,8 +111,8 @@ export const useDocuments = (workspaceId?: string | null) => {
       if (!normalized) return documents;
       return documents.filter(
         (doc) =>
-          doc.filename.toLowerCase().includes(normalized) ||
-          doc.tags.some((tag) => tag.toLowerCase().includes(normalized)),
+          doc.title.toLowerCase().includes(normalized) ||
+          (doc.tags && doc.tags.some((tag) => tag.toLowerCase().includes(normalized))),
       );
     },
     [documents],
