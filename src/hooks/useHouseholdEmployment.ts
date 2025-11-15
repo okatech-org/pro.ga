@@ -49,9 +49,8 @@ export const useHouseholdEmployment = (workspaceId?: string) => {
         ...input,
         id: generateId(),
         workspaceId: input.workspaceId || workspaceId || "",
-        status: input.status ?? "active",
-        createdAt: dateIso(),
-        updatedAt: dateIso(),
+        status: input.status ?? "ACTIVE",
+        createdAt: new Date(dateIso()),
       };
 
       setContracts((prev) => [...prev, contract]);
@@ -61,15 +60,14 @@ export const useHouseholdEmployment = (workspaceId?: string) => {
     [workspaceId],
   );
 
-  const terminateContract = useCallback((contractId: string, endDate?: string) => {
+  const terminateContract = useCallback((contractId: string, endDate?: Date) => {
     setContracts((prev) =>
       prev.map((contract) =>
         contract.id === contractId
           ? {
               ...contract,
-              status: "terminated",
-              endDate: endDate || dateIso(),
-              updatedAt: dateIso(),
+              status: "ENDED" as const,
+              endDate: endDate || new Date(),
             }
           : contract,
       ),
@@ -92,16 +90,14 @@ export const useHouseholdEmployment = (workspaceId?: string) => {
         id: generateId(),
         workspaceId: contract.workspaceId,
         contractId,
-        period,
-        grossSalary,
-        taxableSalary: grossSalary,
-        employerContributions,
-        employeeContributions,
-        netPayable,
-        workedHours,
-        metadata: { bonuses },
-        createdAt: dateIso(),
-        updatedAt: dateIso(),
+        periodStart: new Date(period),
+        periodEnd: new Date(period),
+        brutXaf: grossSalary,
+        retenues: [
+          { libelle: "Cotisations employé", montantXaf: employeeContributions, type: "FIXE" },
+        ],
+        netXaf: netPayable,
+        createdAt: new Date(),
       };
 
       setPayslips((prev) => [...prev, payslip]);
@@ -111,9 +107,9 @@ export const useHouseholdEmployment = (workspaceId?: string) => {
   );
 
   const stats = useMemo(() => {
-    const activeContracts = contracts.filter((contract) => contract.status === "active").length;
-    const terminatedContracts = contracts.filter((contract) => contract.status === "terminated").length;
-    const payroll = payslips.reduce((sum, slip) => sum + slip.netPayable, 0);
+    const activeContracts = contracts.filter((contract) => contract.status === "ACTIVE").length;
+    const terminatedContracts = contracts.filter((contract) => contract.status === "ENDED").length;
+    const payroll = payslips.reduce((sum, slip) => sum + slip.netXaf, 0);
 
     return { activeContracts, terminatedContracts, payroll };
   }, [contracts, payslips]);

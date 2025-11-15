@@ -78,7 +78,7 @@ export const useDocuments = (workspaceId?: string | null) => {
           sha256: hash,
           ocrText: undefined,
           tags: [],
-          createdAt: new Date().toISOString(),
+          createdAt: new Date(),
         });
       }
 

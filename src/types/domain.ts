@@ -153,6 +153,8 @@ export type DomesticJobType =
 export type ContractStatus = "DRAFT" | "ACTIVE" | "ENDED";
 export type SalaryType = "MONTHLY" | "HOURLY";
 
+export type EmploymentContractStatus = ContractStatus;
+
 export interface WorkSchedule {
   joursParSemaine: number[];
   heuresParJour: number;
@@ -164,13 +166,17 @@ export interface EmploymentContract {
   id: UUID;
   workspaceId: UUID;
   employeeName: string;
-  employeeIdInfo: string;
-  jobType: DomesticJobType;
+  role?: string;
+  contractType?: string;
+  employeeIdInfo?: string;
+  jobType?: DomesticJobType;
   startDate: Date;
   endDate?: Date;
-  schedule: WorkSchedule;
-  salaryType: SalaryType;
-  salaryAmountXaf: number;
+  schedule?: WorkSchedule;
+  salaryType?: SalaryType;
+  salaryAmountXaf?: number;
+  hourlyRate?: number;
+  weeklyHours?: number;
   status: ContractStatus;
   pdfUrl?: string;
   createdAt: Date;

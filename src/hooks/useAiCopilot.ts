@@ -45,6 +45,7 @@ const fakeExtraction = (documents: AiDocumentUpload[]): TaxBases => {
     2_000_000,
   );
   return {
+    periode: { debut: new Date(), fin: new Date() },
     tva: {
       collectee: Math.round(base * 0.18),
       deductible: Math.round(base * 0.04),
@@ -55,10 +56,12 @@ const fakeExtraction = (documents: AiDocumentUpload[]): TaxBases => {
       exclusions: Math.round(base * 0.1),
       montant: Math.round(base * 0.01),
     },
-    is: {
-      baseImposable: Math.round(base * 0.25),
-      impot: Math.round(base * 0.0625),
-      tauxEffectif: 0.25,
+    isImf: {
+      resultatFiscal: Math.round(base * 0.25),
+      caHTAnnuel: base,
+      isTheorique: Math.round(base * 0.0625),
+      imf: Math.round(base * 0.0075),
+      retenu: Math.round(base * 0.0625),
     },
     irpp: {
       baseImposable: Math.round(base * 0.3),
