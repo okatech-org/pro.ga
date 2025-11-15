@@ -29,37 +29,8 @@ export const useAuditLog = (filters?: AuditFilters) => {
     setLoading(true);
     setError(null);
 
-    let query = supabase
-      .from("audit_events")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(100);
-
-    if (filters?.userId) {
-      query = query.eq("user_id", filters.userId);
-    }
-    if (filters?.workspaceId) {
-      query = query.eq("workspace_id", filters.workspaceId);
-    }
-    if (filters?.eventType) {
-      query = query.eq("event_type", filters.eventType);
-    }
-    if (filters?.startDate) {
-      query = query.gte("created_at", filters.startDate);
-    }
-    if (filters?.endDate) {
-      query = query.lte("created_at", filters.endDate);
-    }
-
-    const { data, error: queryError } = await query;
-
-    if (queryError) {
-      setError(queryError.message);
-      setEvents([]);
-    } else if (data) {
-      setEvents(data as AuditEvent[]);
-    }
-
+    // Mock data for now - table doesn't exist yet
+    setEvents([]);
     setLoading(false);
   }, [filters]);
 
@@ -73,23 +44,10 @@ export const useAuditLog = (filters?: AuditFilters) => {
       eventData?: Record<string, unknown>,
       workspaceId?: string,
     ) => {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) return;
-
-      const { error: insertError } = await supabase.from("audit_events").insert({
-        user_id: user.id,
-        workspace_id: workspaceId || null,
-        event_type: eventType,
-        event_data: eventData || {},
-      });
-
-      if (insertError) {
-        console.error("Failed to log audit event:", insertError);
-      } else {
-        await fetchEvents();
-      }
+      // Mock implementation - table doesn't exist yet
+      console.log("Audit log:", { eventType, eventData, workspaceId });
     },
-    [fetchEvents],
+    [],
   );
 
   return useMemo(

@@ -88,7 +88,7 @@ export const InvoiceEditor = ({ invoice, onSave, onCancel }: InvoiceEditorProps)
       lines,
       totals,
       issuedOn: invoice?.issuedOn ?? new Date().toISOString(),
-      status: invoice?.status ?? "draft",
+      status: invoice?.status ?? "DRAFT",
     };
     onSave?.(payload);
   };

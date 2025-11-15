@@ -32,13 +32,13 @@ export const TaxSimulationPanel = ({ bases, currency = "XOF" }: TaxSimulationPan
           <TaxCard
             title="TVA"
             amount={result.tva?.amount ?? 0}
-            subtitle={`Collectée : ${formatCurrency(bases.tva?.collected ?? 0, currency)} · Déductible : ${formatCurrency(bases.tva?.deductible ?? 0, currency)}`}
+            subtitle={`Collectée : ${formatCurrency(bases.tva?.collectee ?? 0, currency)} · Déductible : ${formatCurrency(bases.tva?.deductible ?? 0, currency)}`}
             currency={currency}
           />
           <TaxCard
             title="CSS"
             amount={result.css?.amount ?? 0}
-            subtitle={`Base : ${formatCurrency(bases.css?.base ?? 0, currency)}`}
+            subtitle={`Base : ${formatCurrency(bases.css?.baseHT ?? 0, currency)}`}
             currency={currency}
           />
           <TaxCard

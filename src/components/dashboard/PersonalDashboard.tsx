@@ -46,8 +46,8 @@ export const PersonalDashboard = () => {
         contractType: "nanny",
         hourlyRate: 2500,
         weeklyHours: 40,
-        startDate: new Date().toISOString(),
-        status: "active",
+        startDate: new Date(),
+        status: "ACTIVE",
       });
       await addContract({
         workspaceId,
@@ -56,8 +56,8 @@ export const PersonalDashboard = () => {
         contractType: "driver",
         hourlyRate: 3000,
         weeklyHours: 35,
-        startDate: new Date().toISOString(),
-        status: "active",
+        startDate: new Date(),
+        status: "ACTIVE",
       });
     })();
   }, [isPersonalSpace, workspaceId, contracts.length, addContract]);

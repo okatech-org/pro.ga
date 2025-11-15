@@ -10,11 +10,11 @@ type HouseholdEmploymentListProps = {
   emptyStateMessage?: string;
 };
 
-const statusVariant: Record<EmploymentContract["status"], "default" | "secondary" | "outline"> = {
-  draft: "secondary",
-  active: "default",
-  suspended: "secondary",
-  terminated: "outline",
+const statusVariant: Record<ContractStatus, "default" | "secondary" | "outline"> = {
+  DRAFT: "secondary",
+  ACTIVE: "default",
+  SUSPENDED: "secondary",
+  TERMINATED: "outline",
 };
 
 export const HouseholdEmploymentList = ({
@@ -54,7 +54,7 @@ export const HouseholdEmploymentList = ({
                 <p className="text-sm text-muted-foreground">{contract.role}</p>
               </div>
               <Badge variant={statusVariant[contract.status]}>
-                {contract.status === "active" ? "Actif" : contract.status}
+                {contract.status === "ACTIVE" ? "Actif" : contract.status}
               </Badge>
             </div>
 
@@ -73,7 +73,7 @@ export const HouseholdEmploymentList = ({
               </div>
             </div>
 
-            {onTerminate && contract.status === "active" && (
+            {onTerminate && contract.status === "ACTIVE" && (
               <div className="flex justify-end">
                 <Button
                   type="button"
