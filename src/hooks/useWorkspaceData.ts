@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
-import type { Workspace, WorkspaceScope } from "@/types/domain";
+import type { Workspace, WorkspaceScope, WorkspaceType } from "@/types/domain";
 import { loadDemoWorkspaces, persistDemoWorkspaces } from "@/lib/demoState";
 
 const slugify = (value: string) =>

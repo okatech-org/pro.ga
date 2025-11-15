@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import type { EmploymentContract, ContractStatus } from "@/types/domain";
+import type { EmploymentContract, EmploymentContractStatus } from "@/types/domain";
 
 type HouseholdEmploymentListProps = {
   contracts: EmploymentContract[];
@@ -10,10 +10,11 @@ type HouseholdEmploymentListProps = {
   emptyStateMessage?: string;
 };
 
-const statusVariant: Record<ContractStatus, "default" | "secondary" | "outline"> = {
-  DRAFT: "secondary",
-  ACTIVE: "default",
-  ENDED: "outline",
+const statusVariant: Record<EmploymentContractStatus, "default" | "secondary" | "outline" | "destructive"> = {
+  draft: "secondary",
+  active: "default",
+  suspended: "outline",
+  terminated: "destructive",
 };
 
 export const HouseholdEmploymentList = ({

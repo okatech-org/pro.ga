@@ -1,4 +1,4 @@
-import type { Workspace } from "@/types/domain";
+import type { Workspace, WorkspaceType } from "@/types/domain";
 
 export const DEMO_MODE_KEY = "proga.demoMode";
 export const DEMO_WORKSPACES_KEY = "proga.demoWorkspaces";
