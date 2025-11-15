@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 import type { StoreConfig, StorePageContent, StoreProduct } from "@/types/domain";
+import { initTestStoreData } from "@/lib/storeTestData";
 
 const baseTheme: StoreConfig["theme"] = {
   primaryColor: "#6a5af9",
@@ -104,6 +106,24 @@ export const useStoreConfig = (workspaceId?: string | null) => {
     }
 
     const { config: storedConfig, products: storedProducts } = loadState(workspaceId);
+    
+    if (!storedConfig || !storedProducts || storedProducts.length === 0) {
+      const storageKey = `proga.store.${workspaceId}`;
+      const raw = typeof window !== "undefined" ? localStorage.getItem(storageKey) : null;
+      
+      if (!raw && (workspaceId === "demo-business-1" || workspaceId.includes("demo-business") || workspaceId.includes("business"))) {
+        try {
+          const { config: testConfig, products: testProducts } = initTestStoreData(workspaceId);
+          setConfig(testConfig);
+          setProducts(testProducts);
+          persistState(workspaceId, { config: testConfig, products: testProducts });
+          return;
+        } catch (err) {
+          console.error("Error initializing test store data:", err);
+        }
+      }
+    }
+    
     setConfig(storedConfig);
     setProducts(storedProducts);
   }, [workspaceId]);
@@ -215,6 +235,15 @@ export const useStoreConfig = (workspaceId?: string | null) => {
     load();
   }, [load]);
 
+  const initTestData = useCallback(() => {
+    if (!workspaceId) return;
+    const { config: testConfig, products: testProducts } = initTestStoreData(workspaceId);
+    setConfig(testConfig);
+    setProducts(testProducts);
+    persistState(workspaceId, { config: testConfig, products: testProducts });
+    toast.success("Données de test initialisées avec succès");
+  }, [workspaceId]);
+
   const value = useMemo(
     () => ({
       config,
@@ -228,6 +257,7 @@ export const useStoreConfig = (workspaceId?: string | null) => {
       deleteProduct,
       toggleAvailability,
       refresh,
+      initTestData,
     }),
     [
       config,
@@ -241,6 +271,7 @@ export const useStoreConfig = (workspaceId?: string | null) => {
       deleteProduct,
       toggleAvailability,
       refresh,
+      initTestData,
     ],
   );
 

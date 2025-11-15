@@ -67,6 +67,7 @@ const App = () => (
             
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             {/* Boutique publique - doit être avant le catch-all */}
+            <Route path="/store/:slug" element={<StorePublicPage />} />
             <Route path="/:slug" element={<StorePublicPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

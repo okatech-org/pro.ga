@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,20 +8,42 @@ import { Badge } from "@/components/ui/badge";
 import type { StorePageContent } from "@/types/domain";
 
 type StoreHomepageEditorProps = {
-  content: StorePageContent;
+  page?: StorePageContent;
+  content?: StorePageContent;
   onChange?: (content: StorePageContent) => void;
+  onSave?: (page: StorePageContent) => void;
   saving?: boolean;
 };
 
 const defaultHighlight = { title: "", description: "" };
 
-export const StoreHomepageEditor = ({ content, onChange, saving }: StoreHomepageEditorProps) => {
-  const [localContent, setLocalContent] = useState(content);
+const defaultPage: StorePageContent = {
+  heroTitle: "Votre boutique PRO.GA",
+  heroSubtitle: "Présentez vos offres, encaissez et gérez vos commandes en quelques clics.",
+  heroImage: null,
+  highlights: [
+    { title: "Paiements sécurisés", description: "Support mobile money et cartes Visa." },
+    { title: "Stocks synchronisés", description: "Connecté à vos ventes POS." },
+    { title: "Livraison locale", description: "Tarification dynamique par zone." },
+  ],
+  trustBadges: ["Paiement sécurisé", "Support 7/7", "Collecte TVA prête"],
+};
+
+export const StoreHomepageEditor = ({ page, content, onChange, onSave, saving }: StoreHomepageEditorProps) => {
+  const pageContent = page || content || defaultPage;
+  const [localContent, setLocalContent] = useState(pageContent);
+
+  useEffect(() => {
+    if (page || content) {
+      setLocalContent(page || content || defaultPage);
+    }
+  }, [page, content]);
 
   const update = (partial: Partial<StorePageContent>) => {
     const next = { ...localContent, ...partial };
     setLocalContent(next);
     onChange?.(next);
+    onSave?.(next);
   };
 
   const updateHighlight = (index: number, field: "title" | "description", value: string) => {

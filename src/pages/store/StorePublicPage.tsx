@@ -7,6 +7,7 @@ import { NeuButton } from "@/components/ui/neu-button";
 import { AlertCircle, Loader2 } from "lucide-react";
 import type { StoreConfig, StoreProduct } from "@/types/domain";
 import { toast } from "sonner";
+import { initTestStoreData } from "@/lib/storeTestData";
 
 const loadStoreBySlug = async (slug: string): Promise<{ config: StoreConfig | null; products: StoreProduct[] }> => {
   try {
@@ -55,6 +56,53 @@ const loadStoreBySlug = async (slug: string): Promise<{ config: StoreConfig | nu
           continue;
         }
       }
+      
+      if (slug === "boutique-mode") {
+        const testWorkspaceId = "demo-business-1";
+        try {
+          const { config: testConfig, products: testProducts } = initTestStoreData(testWorkspaceId);
+          if (testConfig.slug === slug && testConfig.published) {
+            const { data: products } = await supabase
+              .from("store_products")
+              .select("*")
+              .eq("workspace_id", testWorkspaceId)
+              .eq("is_active", true)
+              .order("created_at", { ascending: false });
+
+            const allProducts = [
+              ...testProducts,
+              ...((products || []).map((p) => ({
+                id: p.id,
+                workspaceId: p.workspace_id,
+                name: p.name,
+                description: p.description || null,
+                price: Number(p.price),
+                currency: p.currency || "XOF",
+                sku: p.sku || null,
+                stock: p.stock_quantity != null ? Number(p.stock_quantity) : null,
+                category: p.category || null,
+                imageUrl: p.image_url || null,
+                status: (p.is_active ? "active" : "archived") as StoreProduct["status"],
+                featured: (p.metadata as any)?.featured || false,
+                createdAt: p.created_at,
+                updatedAt: p.updated_at,
+              })) as StoreProduct[]),
+            ];
+
+            const uniqueProducts = Array.from(
+              new Map(allProducts.map((p) => [p.id, p])).values()
+            );
+
+            return {
+              config: testConfig,
+              products: uniqueProducts,
+            };
+          }
+        } catch (err) {
+          console.error("Error initializing test store data:", err);
+        }
+      }
+      
       return { config: null, products: [] };
     }
 

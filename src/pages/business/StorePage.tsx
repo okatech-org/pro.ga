@@ -2,9 +2,11 @@ import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCurrentWorkspace } from "@/hooks/useCurrentWorkspace";
 import { useStoreConfig } from "@/hooks/useStoreConfig";
+import { useStoreOrders } from "@/hooks/useStoreOrders";
 import { StoreSetupWizard } from "@/components/business/StoreSetupWizard";
 import { StoreHomepageEditor } from "@/components/business/StoreHomepageEditor";
 import { CatalogManager } from "@/components/business/CatalogManager";
+import { OrdersManager } from "@/components/business/OrdersManager";
 import { NeuButton } from "@/components/ui/neu-button";
 import { NeuCard } from "@/components/ui/neu-card";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
@@ -15,8 +17,10 @@ import { ExternalLink, ShoppingBag } from "lucide-react";
 const StorePage = () => {
   const navigate = useNavigate();
   const { currentWorkspace } = useCurrentWorkspace();
-  const { config, updateConfig, products, addProduct, updateProduct, deleteProduct } =
+  const { config, updateConfig, products, addProduct, updateProduct, deleteProduct, initTestData } =
     useStoreConfig(currentWorkspace?.id);
+  const { orders, loading: ordersLoading, updateOrderStatus, deleteOrder, stats } =
+    useStoreOrders(currentWorkspace?.id);
 
   const handleViewStore = useCallback(() => {
     if (config?.slug) {
@@ -110,7 +114,7 @@ const StorePage = () => {
           <main className="px-4 sm:px-6 lg:px-8 pt-4 sm:pt-6 pb-8 sm:pb-10 space-y-4 sm:space-y-6 max-w-7xl mx-auto w-full">
             <Tabs defaultValue="setup" className="w-full">
               <NeuCard className="p-3 sm:p-4 mb-4">
-                <TabsList className="grid w-full grid-cols-3 bg-transparent h-auto p-0 gap-2">
+                <TabsList className="grid w-full grid-cols-4 bg-transparent h-auto p-0 gap-2">
                   <TabsTrigger
                     value="setup"
                     className="neu-card-sm px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 lg:py-3 data-[state=active]:bg-white data-[state=active]:shadow-[inset_3px_3px_6px_rgba(15,23,42,0.12)] data-[state=active]:text-primary data-[state=inactive]:text-slate-600 font-semibold rounded-xl transition-all text-xs sm:text-sm lg:text-base"
@@ -129,10 +133,31 @@ const StorePage = () => {
                   >
                     Catalogue
                   </TabsTrigger>
+                  <TabsTrigger
+                    value="orders"
+                    className="neu-card-sm px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 lg:py-3 data-[state=active]:bg-white data-[state=active]:shadow-[inset_3px_3px_6px_rgba(15,23,42,0.12)] data-[state=active]:text-primary data-[state=inactive]:text-slate-600 font-semibold rounded-xl transition-all text-xs sm:text-sm lg:text-base"
+                  >
+                    Commandes {orders.length > 0 && `(${orders.length})`}
+                  </TabsTrigger>
                 </TabsList>
               </NeuCard>
 
               <TabsContent value="setup" className="space-y-4 mt-4">
+                {(!config || products.length === 0) && (
+                  <NeuCard className="p-6 mb-4">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                      <div>
+                        <h3 className="text-lg font-bold text-slate-900 mb-1">Données de test</h3>
+                        <p className="text-sm text-muted-foreground">
+                          Initialisez des données de test pour tester rapidement la boutique
+                        </p>
+                      </div>
+                      <NeuButton variant="outline" onClick={initTestData}>
+                        Initialiser les données de test
+                      </NeuButton>
+                    </div>
+                  </NeuCard>
+                )}
                 <StoreSetupWizard
                   config={config}
                   onComplete={(data) => {
@@ -172,6 +197,16 @@ const StorePage = () => {
                   onAdd={addProduct}
                   onUpdate={updateProduct}
                   onDelete={deleteProduct}
+                />
+              </TabsContent>
+
+              <TabsContent value="orders" className="space-y-4 mt-4">
+                <OrdersManager
+                  orders={orders}
+                  loading={ordersLoading}
+                  onUpdateStatus={updateOrderStatus}
+                  onDelete={deleteOrder}
+                  stats={stats}
                 />
               </TabsContent>
             </Tabs>
