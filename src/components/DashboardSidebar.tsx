@@ -87,10 +87,10 @@ export const DashboardSidebar = () => {
   }, [isPersonalSpace, isBusinessSpace]);
 
   return (
-    <Sidebar className="w-[300px] bg-transparent border-r-0 text-slate-800 overflow-visible">
-      <div className="h-full flex flex-col gap-6 p-6 pl-7 pr-6 pb-6 overflow-visible">
+    <Sidebar className="w-[300px] bg-transparent border-r-0 text-slate-800">
+      <div className="h-screen flex flex-col gap-6 p-6 pl-7 pr-6 pb-6">
         {/* Header */}
-        <SidebarHeader className="p-0">
+        <SidebarHeader className="p-0 flex-shrink-0">
           <NeuCard className="p-6">
             <div className="flex items-center gap-4">
               <div className={`w-16 h-16 rounded-[20px] flex items-center justify-center shadow-lg flex-shrink-0 ${
@@ -111,8 +111,8 @@ export const DashboardSidebar = () => {
         </SidebarHeader>
 
         {/* Menu Content */}
-        <SidebarContent className="flex-1 overflow-y-auto overflow-x-visible py-4 pr-2 pl-0">
-          <NeuCard className="p-5 space-y-6">
+        <SidebarContent className="flex-1 py-4 pr-2 pl-0 overflow-visible min-h-0">
+          <NeuCard className="p-5 space-y-6 h-full">
             {menuSections.map((section, idx) => (
               <div key={idx} className="space-y-2">
                 <h3 className="px-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-400">
@@ -138,7 +138,7 @@ export const DashboardSidebar = () => {
         </SidebarContent>
 
         {/* Footer */}
-        <SidebarFooter className="p-0">
+        <SidebarFooter className="p-0 flex-shrink-0">
           <NeuCard className="p-5 space-y-3">
             <div>
               <p className="text-xs text-slate-400 mb-1.5 truncate">Connecté en tant que</p>
