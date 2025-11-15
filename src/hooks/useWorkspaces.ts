@@ -1,20 +1,21 @@
 import type { Workspace, Person } from "@/types/domain";
 import { useCurrentWorkspace } from "./useCurrentWorkspace";
 
+type PersonalWorkspace = Workspace & { scope: "personal" };
+type BusinessWorkspace = Workspace & { scope: "business" };
+
 const MOCK_PERSON: Person = {
   id: "person-1",
+  userId: "user-1",
+  fullName: "Marie Dupont",
   email: "marie.dupont@pro.ga",
   firstName: "Marie",
   lastName: "Dupont",
   phone: "+241 06 00 00 00",
-  foyerInfo: {
-    situationFamiliale: "MARIE",
-    nombreEnfants: 2,
-    nombreAutresCharges: 0,
-    quotientFamilial: 2.5,
-  },
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  accountType: "individual",
+  locale: "fr-FR",
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString(),
 };
 
 export const useWorkspaces = () => {

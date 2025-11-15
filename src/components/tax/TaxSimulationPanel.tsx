@@ -8,7 +8,7 @@ import type { TaxBases } from "@/types/domain";
 type TaxSimulationPanelProps = {
   bases: TaxBases;
   currency?: string;
-  onResult?: (result: ReturnType<typeof useTaxEngine>["runAll"]) => void;
+  onResult?: (result: ReturnType<ReturnType<typeof useTaxEngine>["runAll"]>) => void;
 };
 
 const formatCurrency = (value: number, currency = "XOF") =>

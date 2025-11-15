@@ -297,7 +297,14 @@ const HouseholdEmploymentPage = () => {
                     onGenerate={async (data) => {
                       clearError();
                       try {
-                        await generatePayslip(data);
+                        if (data.contractId && data.period && data.workedHours !== undefined) {
+                          await generatePayslip({
+                            contractId: data.contractId,
+                            period: data.period,
+                            workedHours: data.workedHours,
+                            bonuses: data.bonuses ?? 0,
+                          });
+                        }
                       } catch (err) {
                         console.error("Error generating payslip:", err);
                       }
