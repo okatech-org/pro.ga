@@ -1,6 +1,8 @@
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { ArrowRight, Building2, User, Shield, Zap, FileText, TrendingUp } from "lucide-react";
+import { NeuButton } from "@/components/ui/neu-button";
+import { NeuCard } from "@/components/ui/neu-card";
+import { NeuIconPill } from "@/components/ui/neu-icon-pill";
+import { Building2, User, Shield, Zap, FileText, TrendingUp } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
@@ -12,28 +14,27 @@ const Landing = () => {
       {/* Hero Section */}
       <div className="relative overflow-hidden">
         {/* Nav */}
-        <nav className="asted-nav sticky top-0 z-50 backdrop-blur-sm">
+        <nav className="sticky top-0 z-50 backdrop-blur-sm bg-background/80 border-b border-border">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-xl">P</span>
-              </div>
+            <div className="flex items-center gap-3">
+              <NeuIconPill icon={Shield} color="primary" size="md" />
               <span className="text-2xl font-bold text-foreground">PRO.GA</span>
             </div>
             <div className="flex gap-4">
-              <Button
-                variant="ghost"
+              <NeuButton
+                variant="outline"
                 onClick={() => navigate("/auth")}
-                className="text-foreground hover:bg-secondary"
+                className="font-medium"
               >
                 Connexion
-              </Button>
-              <Button
+              </NeuButton>
+              <NeuButton
                 onClick={() => navigate("/auth?signup=true")}
-                className="asted-button"
+                variant="premium"
+                className="font-medium"
               >
                 Créer mon compte
-              </Button>
+              </NeuButton>
             </div>
           </div>
         </nav>
@@ -51,90 +52,82 @@ const Landing = () => {
 
             {/* User Type Selector */}
             <div className="flex flex-col md:flex-row gap-6 justify-center mb-12">
-              <button
+              <NeuCard
                 onClick={() => setUserType("pro")}
-                className={`asted-card p-8 transition-all cursor-pointer hover:scale-105 flex-1 max-w-sm ${
+                className={`p-8 transition-all cursor-pointer hover:scale-105 flex-1 max-w-sm ${
                   userType === "pro" ? "ring-2 ring-primary" : ""
                 }`}
               >
-                <Building2 className="w-12 h-12 text-primary mx-auto mb-4" />
+                <NeuIconPill icon={Building2} color="primary" size="lg" className="mx-auto mb-4" />
                 <h3 className="text-2xl font-bold text-foreground mb-2">Je suis PRO</h3>
                 <p className="text-muted-foreground">
                   Commerçant, entrepreneur, PME
                 </p>
-              </button>
+              </NeuCard>
 
-              <button
+              <NeuCard
                 onClick={() => setUserType("particular")}
-                className={`asted-card p-8 transition-all cursor-pointer hover:scale-105 flex-1 max-w-sm ${
+                className={`p-8 transition-all cursor-pointer hover:scale-105 flex-1 max-w-sm ${
                   userType === "particular" ? "ring-2 ring-primary" : ""
                 }`}
               >
-                <User className="w-12 h-12 text-primary mx-auto mb-4" />
+                <NeuIconPill icon={User} color="info" size="lg" className="mx-auto mb-4" />
                 <h3 className="text-2xl font-bold text-foreground mb-2">Je suis Particulier</h3>
                 <p className="text-muted-foreground">
                   Foyer, emploi à domicile, IRPP
                 </p>
-              </button>
+              </NeuCard>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
+              <NeuButton
                 onClick={() => navigate("/auth?signup=true")}
-                className="asted-button text-lg px-8 py-6"
+                variant="premium"
+                className="px-8 py-6 text-lg"
               >
                 Créer mon compte — Gratuit
-                <ArrowRight className="ml-2 w-5 h-5" />
-              </Button>
-              <Button
-                size="lg"
+              </NeuButton>
+              <NeuButton
                 variant="outline"
                 onClick={() => navigate("/demo")}
-                className="text-lg px-8 py-6 bg-background border-2"
+                className="px-8 py-6 text-lg font-medium"
               >
                 Voir la démo
-              </Button>
+              </NeuButton>
             </div>
           </div>
 
           {/* Features Grid */}
           <div className="grid md:grid-cols-3 gap-8 mt-20">
-            <div className="asted-card text-center p-8">
-              <div className="w-16 h-16 bg-primary/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Shield className="w-8 h-8 text-primary" />
-              </div>
+            <NeuCard className="text-center p-8">
+              <NeuIconPill icon={Shield} color="primary" size="lg" className="mx-auto mb-4" />
               <h3 className="text-xl font-bold text-foreground mb-2">
                 Conforme DGI
               </h3>
               <p className="text-muted-foreground">
                 Calculs fiscaux conformes aux barèmes officiels du Gabon (TVA, CSS, IS, IMF, IRPP)
               </p>
-            </div>
+            </NeuCard>
 
-            <div className="asted-card text-center p-8">
-              <div className="w-16 h-16 bg-success/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <Zap className="w-8 h-8 text-success" />
-              </div>
+            <NeuCard className="text-center p-8">
+              <NeuIconPill icon={Zap} color="success" size="lg" className="mx-auto mb-4" />
               <h3 className="text-xl font-bold text-foreground mb-2">
                 IA Intégrée
               </h3>
               <p className="text-muted-foreground">
                 Lecture de documents, pré-remplissage automatique, questions intelligentes
               </p>
-            </div>
+            </NeuCard>
 
-            <div className="asted-card text-center p-8">
-              <div className="w-16 h-16 bg-warning/10 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                <FileText className="w-8 h-8 text-warning" />
-              </div>
+            <NeuCard className="text-center p-8">
+              <NeuIconPill icon={FileText} color="warning" size="lg" className="mx-auto mb-4" />
               <h3 className="text-xl font-bold text-foreground mb-2">
                 Export App A
               </h3>
               <p className="text-muted-foreground">
                 Pré-déclarations exportables vers DIGITAX en un clic
               </p>
-            </div>
+            </NeuCard>
           </div>
         </div>
       </div>
@@ -150,8 +143,8 @@ const Landing = () => {
           </p>
 
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="asted-card p-8">
-              <TrendingUp className="w-10 h-10 text-primary mb-4" />
+            <NeuCard className="p-8">
+              <NeuIconPill icon={TrendingUp} color="primary" size="md" className="mb-4" />
               <h3 className="text-2xl font-bold text-foreground mb-3">
                 Boutique en ligne {"{slug}"}.pro.ga
               </h3>
@@ -169,10 +162,10 @@ const Landing = () => {
                   <span>Factures automatiques avec QR de vérification</span>
                 </li>
               </ul>
-            </div>
+            </NeuCard>
 
-            <div className="asted-card p-8">
-              <Building2 className="w-10 h-10 text-success mb-4" />
+            <NeuCard className="p-8">
+              <NeuIconPill icon={Building2} color="success" size="md" className="mb-4" />
               <h3 className="text-2xl font-bold text-foreground mb-3">
                 Comptabilité & Fiscalité
               </h3>
@@ -190,7 +183,7 @@ const Landing = () => {
                   <span>POS et encaissement au comptoir</span>
                 </li>
               </ul>
-            </div>
+            </NeuCard>
           </div>
         </div>
       )}
@@ -206,8 +199,8 @@ const Landing = () => {
           </p>
 
           <div className="grid md:grid-cols-2 gap-8">
-            <div className="asted-card p-8">
-              <User className="w-10 h-10 text-primary mb-4" />
+            <NeuCard className="p-8">
+              <NeuIconPill icon={User} color="primary" size="md" className="mb-4" />
               <h3 className="text-2xl font-bold text-foreground mb-3">
                 IRPP & Simulation
               </h3>
@@ -225,10 +218,10 @@ const Landing = () => {
                   <span>Tous types de revenus (salaires, loyers, BIC/BNC)</span>
                 </li>
               </ul>
-            </div>
+            </NeuCard>
 
-            <div className="asted-card p-8">
-              <Shield className="w-10 h-10 text-success mb-4" />
+            <NeuCard className="p-8">
+              <NeuIconPill icon={Shield} color="success" size="md" className="mb-4" />
               <h3 className="text-2xl font-bold text-foreground mb-3">
                 Emploi à domicile
               </h3>
@@ -246,39 +239,36 @@ const Landing = () => {
                   <span>Suivi des heures et présences</span>
                 </li>
               </ul>
-            </div>
+            </NeuCard>
           </div>
         </div>
       )}
 
       {/* Footer CTA */}
       <div className="max-w-7xl mx-auto px-6 py-20">
-        <div className="asted-card p-12 text-center">
+        <NeuCard className="p-12 text-center">
           <h2 className="text-3xl font-bold text-foreground mb-4">
             Prêt à simplifier votre gestion ?
           </h2>
           <p className="text-muted-foreground mb-8 max-w-xl mx-auto">
             Rejoignez les professionnels et particuliers qui font confiance à PRO.GA
           </p>
-          <Button
-            size="lg"
+          <NeuButton
             onClick={() => navigate("/auth?signup=true")}
-            className="asted-button text-lg px-8 py-6"
+            variant="premium"
+            className="px-8 py-6 text-lg"
           >
             Créer mon compte gratuitement
-            <ArrowRight className="ml-2 w-5 h-5" />
-          </Button>
-        </div>
+          </NeuButton>
+        </NeuCard>
       </div>
 
       {/* Footer */}
       <footer className="border-t border-border py-8">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold">P</span>
-              </div>
+            <div className="flex items-center gap-3">
+              <NeuIconPill icon={Shield} color="primary" size="sm" />
               <span className="text-lg font-bold text-foreground">PRO.GA</span>
             </div>
             <p className="text-muted-foreground text-sm">

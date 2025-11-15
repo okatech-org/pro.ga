@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -6,6 +6,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
 import { Building2, User, Check } from "lucide-react";
+import { getDemoModeState } from "@/lib/demoState";
 
 const Onboarding = () => {
   const navigate = useNavigate();
@@ -22,6 +23,13 @@ const Onboarding = () => {
   const [companyNif, setCompanyNif] = useState("");
   const [wantsBoutique, setWantsBoutique] = useState<"yes" | "no">("no");
   const [storeSlug, setStoreSlug] = useState("");
+
+  useEffect(() => {
+    const demo = getDemoModeState();
+    if (demo?.enabled) {
+      navigate("/dashboard", { replace: true });
+    }
+  }, [navigate]);
 
   const handleNext = () => {
     if (step === 1 && (!firstName || !lastName)) {

@@ -1,167 +1,79 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { supabase } from "@/integrations/supabase/client";
-import { toast } from "sonner";
+import { Navigate } from "react-router-dom";
+import { WorkspaceSwitcher } from "@/components/layout/WorkspaceSwitcher";
+import { PersonalDashboard } from "@/components/dashboard/PersonalDashboard";
+import { BusinessDashboard } from "@/components/dashboard/BusinessDashboard";
+import { useWorkspaces } from "@/hooks/useWorkspaces";
+import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/components/DashboardSidebar";
-import { BrandShowcase } from "@/components/BrandShowcase";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { 
-  TrendingUp, 
-  Users, 
-  FileText, 
-  Calculator,
-  Building2,
-  User,
-  Plus
-} from "lucide-react";
-
-type WorkspaceType = "PERSO" | "ENTREPRISE";
-
-interface Workspace {
-  id: string;
-  type: WorkspaceType;
-  displayName: string;
-}
+import { NeuCard } from "@/components/ui/neu-card";
+import { Building2, User, Shield } from "lucide-react";
+import { NeuIconPill } from "@/components/ui/neu-icon-pill";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
-  const [currentWorkspace, setCurrentWorkspace] = useState<Workspace>({
-    id: "perso-1",
-    type: "PERSO",
-    displayName: "Espace Personnel"
-  });
+  const { person, currentWorkspace, isPersonalSpace, isBusinessSpace, isLoading } = useWorkspaces();
 
-  useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (!session) {
-        navigate("/auth");
-      }
-    });
-  }, [navigate]);
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-muted/10">
+        <div className="text-center space-y-3">
+          <div className="w-12 h-12 border-4 border-primary/50 border-t-transparent rounded-full animate-spin mx-auto" />
+          <p className="text-sm text-muted-foreground">Chargement de votre espace…</p>
+        </div>
+      </div>
+    );
+  }
 
-  const stats = [
-    {
-      icon: TrendingUp,
-      label: "Chiffre d'affaires",
-      value: "0 FCFA",
-      color: "var(--asted-primary-500)"
-    },
-    {
-      icon: FileText,
-      label: "Factures",
-      value: "0",
-      color: "var(--asted-success-500)"
-    },
-    {
-      icon: Users,
-      label: "Clients",
-      value: "0",
-      color: "var(--asted-info-500)"
-    },
-    {
-      icon: Calculator,
-      label: "Devis",
-      value: "0",
-      color: "var(--asted-warning-500)"
-    }
-  ];
+  if (!currentWorkspace) {
+    return <Navigate to="/onboarding" replace />;
+  }
 
   return (
     <SidebarProvider>
-      <div className="flex min-h-screen w-full">
+      <div className="flex min-h-screen bg-background">
         <DashboardSidebar />
-        
-        <main className="flex-1 p-6" style={{ background: "var(--asted-bg-base)" }}>
-          {/* Header */}
-          <header className="asted-card mb-6">
-            <div className="flex items-center justify-between flex-wrap gap-4">
-              <div className="flex items-center gap-3">
-                <SidebarTrigger className="asted-button-sm lg:hidden" />
-                {currentWorkspace.type === "PERSO" ? (
-                  <User className="w-8 h-8" style={{ color: "var(--asted-primary-500)" }} />
-                ) : (
-                  <Building2 className="w-8 h-8" style={{ color: "var(--asted-primary-500)" }} />
-                )}
-                <div>
-                  <h1 className="text-2xl font-bold" style={{ color: "var(--asted-text-primary)" }}>
-                    {currentWorkspace.displayName}
-                  </h1>
-                  <p className="text-sm" style={{ color: "var(--asted-text-tertiary)" }}>
-                    Tableau de bord
-                  </p>
+        <SidebarInset className="flex-1 bg-background pl-4 lg:pl-6">
+          <header className="px-8 pt-8">
+            <NeuCard className="p-8">
+              <div className="flex items-center justify-between gap-6">
+                <div className="flex items-center gap-4 flex-1">
+                  <div className={`w-16 h-16 rounded-2xl flex items-center justify-center flex-shrink-0 shadow-lg ${
+                    isPersonalSpace ? "bg-gradient-to-br from-blue-400 to-blue-600" : "bg-gradient-to-br from-green-400 to-green-600"
+                  }`}>
+                    {isPersonalSpace ? (
+                      <User className="w-8 h-8 text-white" />
+                    ) : (
+                      <Building2 className="w-8 h-8 text-white" />
+                    )}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-xs uppercase tracking-[0.3em] text-slate-400 mb-2">
+                      {isPersonalSpace ? "Espace personnel" : "Espace entreprise"}
+                    </p>
+                    <h1 className="text-3xl font-bold text-slate-900 mb-1 truncate">
+                      {isPersonalSpace ? "Espace Personnel" : currentWorkspace?.name || "Espace Entreprise"}
+                    </h1>
+                    <p className="text-sm text-slate-500">
+                      {isPersonalSpace
+                        ? "Gérez votre foyer, vos revenus et vos obligations fiscales"
+                        : "Pilotez vos ventes, votre boutique et vos obligations fiscales"}
+                    </p>
+                  </div>
                 </div>
+                <WorkspaceSwitcher />
               </div>
-            </div>
+            </NeuCard>
           </header>
 
-          {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-            {stats.map((stat, index) => (
-              <div key={index} className="asted-card asted-card-hover">
-                <div className="flex items-center gap-4">
-                  <div 
-                    className="asted-pill-icon"
-                    style={{ 
-                      width: 50, 
-                      height: 50,
-                      color: stat.color
-                    }}
-                  >
-                    <stat.icon className="w-6 h-6" />
-                  </div>
-                  <div>
-                    <p className="text-sm" style={{ color: "var(--asted-text-tertiary)" }}>
-                      {stat.label}
-                    </p>
-                    <p className="text-2xl font-bold" style={{ color: "var(--asted-text-primary)" }}>
-                      {stat.value}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Recent Activity */}
-          <div className="asted-card">
-            <h2 className="text-xl font-bold mb-4" style={{ color: "var(--asted-text-primary)" }}>
-              Activité récente
-            </h2>
-            <div className="asted-card-inset p-8 text-center">
-              <FileText className="w-12 h-12 mx-auto mb-4" style={{ color: "var(--asted-text-tertiary)" }} />
-              <p style={{ color: "var(--asted-text-secondary)" }}>
-                Aucune activité récente
-              </p>
-              <p className="text-sm mt-2" style={{ color: "var(--asted-text-tertiary)" }}>
-                Commencez par créer votre première facture ou devis
-              </p>
-            </div>
-          </div>
-
-          {/* Quick Actions */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-            <button className="asted-button asted-button-primary">
-              <Plus className="w-4 h-4" />
-              <span>Nouvelle facture</span>
-            </button>
-            <button className="asted-button asted-button-secondary">
-              <FileText className="w-4 h-4" />
-              <span>Nouveau devis</span>
-            </button>
-            <button className="asted-button">
-              <Users className="w-4 h-4" />
-              <span>Ajouter un client</span>
-            </button>
-          </div>
-
-          {/* Brand Showcase */}
-          <div className="mt-8">
-            <BrandShowcase />
-          </div>
-        </main>
+          <main className="px-8 pt-6 pb-10 space-y-8 max-w-7xl mx-auto w-full">
+            {isPersonalSpace && <PersonalDashboard />}
+            {isBusinessSpace && <BusinessDashboard />}
+          </main>
+        </SidebarInset>
       </div>
     </SidebarProvider>
   );
 };
 
 export default Dashboard;
+
+

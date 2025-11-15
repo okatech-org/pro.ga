@@ -1,6 +1,8 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button } from "@/components/ui/button";
+import { NeuButton } from "@/components/ui/neu-button";
+import { NeuCard } from "@/components/ui/neu-card";
+import { NeuIconPill } from "@/components/ui/neu-icon-pill";
 import { useDemoLogin } from "@/hooks/useDemoLogin";
 import {
   Dialog,
@@ -65,11 +67,21 @@ const DemoAccountCard = ({
   onLoginDemo,
   isLoading
 }: DemoAccountProps & { onDiscover: () => void; onLoginDemo: () => void; isLoading: boolean }) => {
+  const getIconColor = () => {
+    if (color.includes('destructive')) return 'error';
+    if (color.includes('success')) return 'success';
+    if (color.includes('warning')) return 'warning';
+    return 'primary';
+  };
+
   return (
-    <div className="asted-card p-6 hover:scale-105 transition-all">
-      <div className={`w-16 h-16 ${color} rounded-2xl flex items-center justify-center mb-4`}>
-        {icon}
-      </div>
+    <NeuCard className="p-6 hover:scale-105 transition-all">
+      <NeuIconPill 
+        icon={icon.type} 
+        color={getIconColor()} 
+        size="lg" 
+        className="mb-4"
+      />
       <div className="mb-2">
         <span className="text-xs font-semibold text-primary uppercase tracking-wide">
           {category}
@@ -97,18 +109,19 @@ const DemoAccountCard = ({
       </div>
       
       <div className="flex gap-2">
-        <Button onClick={onDiscover} variant="outline" className="flex-1">
+        <NeuButton onClick={onDiscover} variant="outline" className="flex-1">
           Découvrir
-        </Button>
-        <Button 
+        </NeuButton>
+        <NeuButton 
           onClick={onLoginDemo} 
           disabled={isLoading}
-          className="flex-1 asted-button"
+          variant="default"
+          className="flex-1"
         >
           {isLoading ? "Connexion..." : "Se connecter"}
-        </Button>
+        </NeuButton>
       </div>
-    </div>
+    </NeuCard>
   );
 };
 
@@ -127,24 +140,38 @@ const DemoDetailModal = ({
 }) => {
   if (!account) return null;
 
+  const getIconGradient = () => {
+    if (account.accountType === "admin") {
+      return "bg-gradient-to-br from-red-400 to-red-600";
+    }
+    if (account.accountType === "salon" || account.accountType === "fruit_veg") {
+      return "bg-gradient-to-br from-green-400 to-green-600";
+    }
+    if (account.accountType === "restaurant" || account.accountType === "multi_activity") {
+      return "bg-gradient-to-br from-yellow-400 to-yellow-600";
+    }
+    return "bg-gradient-to-br from-blue-400 to-blue-600";
+  };
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+      <DialogContent className="max-w-4xl">
         <DialogHeader>
-          <div className="flex items-center gap-4 mb-4">
-            <div className={`w-16 h-16 ${account.color} rounded-2xl flex items-center justify-center`}>
-              {account.icon}
+          <div className="flex items-center gap-4 flex-1 mb-2">
+            <div className={`w-16 h-16 ${getIconGradient()} rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0`}>
+              {React.cloneElement(account.icon as React.ReactElement, { className: "w-8 h-8 text-white" })}
             </div>
-            <div>
-              <DialogTitle className="text-3xl font-bold">{account.title}</DialogTitle>
-              <DialogDescription className="text-base mt-1">
+            <div className="flex-1 min-w-0">
+              <p className="text-xs uppercase tracking-[0.3em] text-slate-400 mb-2">{account.category}</p>
+              <DialogTitle>{account.title}</DialogTitle>
+              <DialogDescription className="text-sm mt-1">
                 {account.description}
               </DialogDescription>
             </div>
           </div>
         </DialogHeader>
 
-        <div className="space-y-8 mt-6">
+        <div className="space-y-8">
           {/* Workflow Section */}
           <div>
             <h3 className="text-2xl font-bold text-foreground mb-4 flex items-center gap-2">
@@ -153,13 +180,11 @@ const DemoDetailModal = ({
             </h3>
             <div className="space-y-4">
               {account.workflow.map((step, index) => (
-                <div key={index} className="asted-card-pressed p-4">
+                <div key={index} className="neu-inset p-4 rounded-xl">
                   <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center flex-shrink-0">
-                      <span className="text-primary-foreground font-bold text-lg">
-                        {step.step}
-                      </span>
-                    </div>
+                    <NeuIconPill icon={Check} color="primary" size="sm" className="flex-shrink-0">
+                      <span className="font-bold text-lg">{step.step}</span>
+                    </NeuIconPill>
                     <div className="flex-1">
                       <h4 className="font-bold text-foreground mb-1">{step.title}</h4>
                       <p className="text-sm text-muted-foreground">{step.description}</p>
@@ -179,10 +204,10 @@ const DemoDetailModal = ({
               <FileText className="w-6 h-6 text-success" />
               Données de Démonstration
             </h3>
-            <div className="asted-card p-6">
+            <NeuCard className="p-6">
               <div className="grid md:grid-cols-2 gap-4">
                 {account.demoData.map((data, index) => (
-                  <div key={index} className="flex justify-between items-center p-3 bg-secondary/50 rounded-lg">
+                  <div key={index} className="flex justify-between items-center p-3 neu-inset rounded-lg">
                     <span className="text-sm font-medium text-muted-foreground">
                       {data.label}
                     </span>
@@ -192,7 +217,7 @@ const DemoDetailModal = ({
                   </div>
                 ))}
               </div>
-            </div>
+            </NeuCard>
           </div>
 
           {/* Features Section */}
@@ -203,7 +228,7 @@ const DemoDetailModal = ({
             </h3>
             <div className="grid md:grid-cols-2 gap-3">
               {account.features.map((feature, index) => (
-                <div key={index} className="flex items-start gap-2 p-3 asted-card-pressed">
+                <div key={index} className="flex items-start gap-2 p-3 neu-inset rounded-lg">
                   <Check className="w-4 h-4 text-success mt-0.5 flex-shrink-0" />
                   <span className="text-sm text-foreground">{feature}</span>
                 </div>
@@ -212,7 +237,7 @@ const DemoDetailModal = ({
           </div>
 
           {/* CTA */}
-          <div className="asted-card p-6 text-center">
+          <NeuCard className="p-6 text-center">
             <h4 className="text-xl font-bold text-foreground mb-2">
               Prêt à essayer ce type de compte ?
             </h4>
@@ -220,23 +245,23 @@ const DemoDetailModal = ({
               Testez ce type de compte immédiatement ou créez votre propre compte personnalisé.
             </p>
             <div className="flex gap-3">
-              <Button 
+              <NeuButton 
                 onClick={onLoginDemo}
                 disabled={isLoading}
                 variant="default"
-                className="flex-1 asted-button"
+                className="flex-1"
               >
                 {isLoading ? "Connexion..." : "Se connecter en tant que démo"}
-              </Button>
-              <Button 
+              </NeuButton>
+              <NeuButton 
                 onClick={() => window.location.href = "/auth?signup=true"} 
-                variant="outline"
+                variant="premium"
                 className="flex-1"
               >
                 Créer mon compte
-              </Button>
+              </NeuButton>
             </div>
-          </div>
+          </NeuCard>
         </div>
       </DialogContent>
     </Dialog>
@@ -264,7 +289,7 @@ const Demo = () => {
       icon: <Shield className="w-8 h-8 text-destructive" />,
       title: "Admin Système",
       category: "SYSTÈME",
-      description: "Gestion complète de la plateforme PRO.GA avec accès aux statistiques, modération et support.",
+      description: "Supervisez l’ensemble de l’écosystème PRO.GA : monitorings temps réel, audit des workspaces et gestion du support.",
       features: [
         "Tableau de bord global des utilisateurs",
         "Gestion des workspaces et permissions",
@@ -279,25 +304,25 @@ const Demo = () => {
         {
           step: 1,
           title: "Connexion admin",
-          description: "Accès sécurisé avec authentification renforcée et logs d'accès",
+          description: "Authentification renforcée, journalisation automatique de chaque action critique.",
           icon: <Shield className="w-5 h-5" />
         },
         {
           step: 2,
           title: "Dashboard global",
-          description: "Vue d'ensemble des utilisateurs, workspaces actifs et exports App A",
+          description: "KPIs en temps réel : workspaces actifs, exports App A, taux d’erreur, capacité compute.",
           icon: <TrendingUp className="w-5 h-5" />
         },
         {
           step: 3,
           title: "Monitoring",
-          description: "Suivi des performances, erreurs et alertes système en temps réel",
+          description: "Alertes déploiement / Edge Functions, redémarrage ciblé des services, audit des quotas.",
           icon: <FileText className="w-5 h-5" />
         },
         {
           step: 4,
           title: "Support",
-          description: "Réponse aux tickets utilisateurs et assistance technique",
+          description: "Dashboard tickets + escalade Slack, historique conversations et macros d’assistance.",
           icon: <User className="w-5 h-5" />
         }
       ],
@@ -315,40 +340,37 @@ const Demo = () => {
       icon: <User className="w-8 h-8 text-primary" />,
       title: "Particulier",
       category: "ESPACE PERSO",
-      description: "Gérez votre foyer, vos revenus et vos obligations fiscales personnelles au Gabon.",
+      description: "Déclarer ses revenus, simuler l’IRPP et gérer l’emploi à domicile dans la même interface.",
       features: [
         "Calcul IRPP avec barème progressif",
         "Simulation fiscale personnalisée",
         "Gestion emploi à domicile (ménage, gardien, nounou)",
-        "Génération contrats et fiches de paie",
-        "Suivi revenus (salaires, loyers, dividendes)",
-        "Upload documents (bulletins, relevés)",
-        "Export pré-déclaration DIGITAX"
+        "Génération contrats et fiches de paie"
       ],
       color: "bg-primary/10",
       workflow: [
         {
           step: 1,
           title: "Profil fiscal",
-          description: "Renseignez votre situation familiale et nombre de personnes à charge",
+          description: "Renseignez quotient familial, NIF perso et pièces justificatives (PDF / photo).",
           icon: <User className="w-5 h-5" />
         },
         {
           step: 2,
           title: "Déclaration revenus",
-          description: "Saisissez vos revenus (salaires, loyers, BIC/BNC) ou uploadez vos documents",
+          description: "Salaires, loyers, BIC/BNC, dividendes : import CSV, OCR PDF, rapprochement automatique.",
           icon: <FileText className="w-5 h-5" />
         },
         {
           step: 3,
           title: "Simulation IRPP",
-          description: "Calculez automatiquement votre IRPP avec barème et quotient familial",
+          description: "IRPP recalculé en temps réel avec crédit d’impôt, abattement et comparatif année N-1.",
           icon: <Calculator className="w-5 h-5" />
         },
         {
           step: 4,
           title: "Export App A",
-          description: "Générez votre pré-déclaration pour DIGITAX avec QR de vérification",
+          description: "Génération App A DIGITAX + QR de vérification, signature JWS, archivage Supabase.",
           icon: <Check className="w-5 h-5" />
         }
       ],
@@ -366,7 +388,7 @@ const Demo = () => {
       icon: <ShoppingBag className="w-8 h-8 text-primary" />,
       title: "Boutique de Vêtements",
       category: "COMMERCE",
-      description: "Vendez en ligne avec votre boutique vêtements.pro.ga et gérez votre stock facilement.",
+      description: "Créez votre boutique {slug}.pro.ga, synchronisez POS et stock, encaissez en Mobile Money.",
       features: [
         "Boutique en ligne {slug}.pro.ga personnalisable",
         "Catalogue produits avec tailles et couleurs",
@@ -382,25 +404,25 @@ const Demo = () => {
         {
           step: 1,
           title: "Création boutique",
-          description: "Configurez votreboutique.pro.ga avec logo, couleurs et présentation",
+          description: "Identité visuelle, sections de contenu, SEO, mode bac à sable pour prévisualiser.",
           icon: <Building2 className="w-5 h-5" />
         },
         {
           step: 2,
           title: "Catalogue produits",
-          description: "Ajoutez vos vêtements avec photos, prix, tailles, couleurs et stock",
+          description: "Catalogue multi-variantes (taille/couleur), import Excel/CSV, photos optimisées.",
           icon: <ShoppingBag className="w-5 h-5" />
         },
         {
           step: 3,
           title: "Réception commandes",
-          description: "Gérez les commandes clients avec statuts et notifications",
+          description: "Commandes web + POS fusionnées, notifications WhatsApp/SMS, suivi logistique.",
           icon: <FileText className="w-5 h-5" />
         },
         {
           step: 4,
           title: "Taxes automatiques",
-          description: "TVA, CSS et IS/IMF calculés automatiquement, export App A mensuel",
+          description: "TVA collectée/déductible, CSS 3.2%, export App A prêt pour dépôt DIGITAX.",
           icon: <Calculator className="w-5 h-5" />
         }
       ],
@@ -418,7 +440,7 @@ const Demo = () => {
       icon: <Scissors className="w-8 h-8 text-success" />,
       title: "Salon Coiffure & Beauté",
       category: "SERVICES",
-      description: "Réservations en ligne, gestion clients et facturation pour votre salon de beauté.",
+      description: "Planning en ligne, CRM clients et encaissement POS pour salons de beauté/coiffure.",
       features: [
         "Catalogue prestations (coupe, coloration, soin)",
         "Prise de rendez-vous en ligne",
@@ -434,25 +456,25 @@ const Demo = () => {
         {
           step: 1,
           title: "Catalogue services",
-          description: "Créez vos prestations (coupe 5000 FCFA, coloration 15000 FCFA, etc.)",
+          description: "Catalogue prestations (coupe, coloration, soins) avec durée, prix, commissions staff.",
           icon: <Scissors className="w-5 h-5" />
         },
         {
           step: 2,
           title: "Réservations clients",
-          description: "Vos clients réservent en ligne, vous gérez le planning en temps réel",
+          description: "Réservations web/app, confirmation SMS, gestion no-show et liste d’attente.",
           icon: <User className="w-5 h-5" />
         },
         {
           step: 3,
           title: "Encaissement POS",
-          description: "Encaissez au salon, facture automatique avec TVA 18%",
+          description: "POS tactile avec caisses multiples, factures TVA 18%, split paiement.",
           icon: <FileText className="w-5 h-5" />
         },
         {
           step: 4,
           title: "Déclarations fiscales",
-          description: "CSS et IS calculés mensuellement, export App A en un clic",
+          description: "CSS, TVA, IS/IMF automatisés, export App A et archivage bulletins caisse.",
           icon: <TrendingUp className="w-5 h-5" />
         }
       ],
@@ -470,7 +492,7 @@ const Demo = () => {
       icon: <Apple className="w-8 h-8 text-success" />,
       title: "Vente Fruits & Légumes",
       category: "ARTISANAL",
-      description: "Commercialisez vos produits frais locaux avec une boutique en ligne simple et efficace.",
+      description: "Vendez vos produits frais avec catalogue saisonnier, gestion de lots et tournées de livraison.",
       features: [
         "Boutique fruitsetlegumes.pro.ga",
         "Catalogue produits frais avec photos",
@@ -486,25 +508,25 @@ const Demo = () => {
         {
           step: 1,
           title: "Catalogue produits frais",
-          description: "Ajoutez vos fruits et légumes : mangues 1500 FCFA/kg, tomates 800 FCFA/kg",
+          description: "Catalogue par calibre / unité, calcul marge brute, import prix marché ONASA.",
           icon: <Apple className="w-5 h-5" />
         },
         {
           step: 2,
           title: "Gestion fraîcheur",
-          description: "Suivez dates de péremption, alertes automatiques stock faible",
+          description: "Gestion DLC, alertes détérioration, génération automatique de promotions anti-gaspillage.",
           icon: <FileText className="w-5 h-5" />
         },
         {
           step: 3,
           title: "Commandes clients",
-          description: "Réception commandes, préparation paniers, organisation livraisons",
+          description: "Préparation paniers, affectation livreurs, routes optimisées, paiement à la livraison.",
           icon: <ShoppingBag className="w-5 h-5" />
         },
         {
           step: 4,
           title: "Fiscalité simplifiée",
-          description: "TVA exonérée, calcul CSS 1% et IMF annuel, export App A",
+          description: "TVA exonération agricole, CSS 1%, IMF annuelle, export App A prérempli.",
           icon: <Calculator className="w-5 h-5" />
         }
       ],
@@ -522,7 +544,7 @@ const Demo = () => {
       icon: <UtensilsCrossed className="w-8 h-8 text-warning" />,
       title: "Restaurant",
       category: "RESTAURATION",
-      description: "Menu en ligne, commandes à emporter et gestion complète de votre restaurant.",
+      description: "Menu digital, commandes à emporter, POS salle et comptabilité restauration.",
       features: [
         "Menu en ligne monrestaurant.pro.ga",
         "Commandes à emporter et livraison",
@@ -538,25 +560,25 @@ const Demo = () => {
         {
           step: 1,
           title: "Création menu",
-          description: "Publiez votre menu : entrées, plats, desserts avec photos et prix",
+          description: "Construisez votre menu (entrées/plats/desserts), photos optimisées, multi-langues.",
           icon: <UtensilsCrossed className="w-5 h-5" />
         },
         {
           step: 2,
           title: "Prises de commandes",
-          description: "Commandes en ligne (emporter/livraison) + POS salle avec plans de tables",
+          description: "Commandes emporter/livraison + POS salles avec plan des tables et KDS cuisine.",
           icon: <ShoppingBag className="w-5 h-5" />
         },
         {
           step: 3,
           title: "Service & facturation",
-          description: "Tickets cuisine, addition automatique, split de facture, TVA 18%",
+          description: "Tickets cuisine, addition en un clic, split facture, TVA 18% appliquée automatiquement.",
           icon: <FileText className="w-5 h-5" />
         },
         {
           step: 4,
           title: "Compta restauration",
-          description: "Matières premières, charges personnel, TVA/CSS/IS, export App A",
+          description: "Analyse coût matière, charges personnel, TVA/CSS/IS consolidées, export App A.",
           icon: <Calculator className="w-5 h-5" />
         }
       ],
@@ -574,7 +596,7 @@ const Demo = () => {
       icon: <Briefcase className="w-8 h-8 text-primary" />,
       title: "Prestations Services Divers",
       category: "SERVICES PRO",
-      description: "Consultants, artisans, freelances : gérez vos missions et votre facturation.",
+      description: "Consultants, artisans, freelances : pipeline devis → mission → facture → export fiscal.",
       features: [
         "Devis et factures professionnelles",
         "Suivi missions et projets clients",
@@ -590,25 +612,25 @@ const Demo = () => {
         {
           step: 1,
           title: "Création devis",
-          description: "Devis détaillé avec prestations, quantités, prix unitaires et TVA",
+          description: "Devis multi-lots, signature électronique, workflows d’approbation client.",
           icon: <FileText className="w-5 h-5" />
         },
         {
           step: 2,
           title: "Suivi missions",
-          description: "Suivi temps passé, jalons projets, tableau de bord client",
+          description: "Timesheet, jalons projets, portail client avec validation et retours.",
           icon: <TrendingUp className="w-5 h-5" />
         },
         {
           step: 3,
           title: "Facturation",
-          description: "Transformation devis en facture, paiements, relances automatiques",
+          description: "Transformation devis → facture, relances automatiques, encaissement Mobile Money.",
           icon: <Calculator className="w-5 h-5" />
         },
         {
           step: 4,
           title: "Déclarations BNC",
-          description: "Calcul BNC, charges déductibles, TVA/CSS, export App A mensuel",
+          description: "BNC/BIC, charges déductibles, TVA/CSS automatisées, export App A mensuel.",
           icon: <Check className="w-5 h-5" />
         }
       ],
@@ -626,7 +648,7 @@ const Demo = () => {
       icon: <Building2 className="w-8 h-8 text-warning" />,
       title: "PME Multi-activités",
       category: "ENTREPRISE",
-      description: "Grande entreprise avec plusieurs départements, multi-utilisateurs et comptabilité avancée.",
+      description: "Groupes multi-activités : workspaces par BU, équipes distinctes, consolidation SYSCOHADA.",
       features: [
         "Multi-workspaces (ventes, services, production)",
         "Gestion multi-utilisateurs et rôles",
@@ -642,25 +664,25 @@ const Demo = () => {
         {
           step: 1,
           title: "Structure groupe",
-          description: "Créez workspaces par activité : boutique, services, production",
+          description: "Structurez vos BU (boutique, services, production) avec indicateurs dédiés.",
           icon: <Building2 className="w-5 h-5" />
         },
         {
           step: 2,
           title: "Rôles & permissions",
-          description: "Gérant, comptable, opérateur POS, auditeur avec accès différenciés",
+          description: "Rôles granulaires (gérant, comptable, auditeur) et audit log complet.",
           icon: <User className="w-5 h-5" />
         },
         {
           step: 3,
           title: "Consolidation compta",
-          description: "Plan SYSCOHADA, écritures par workspace, grand-livre consolidé",
+          description: "Ecritures multi-workspaces, plan SYSCOHADA, consolidation GL + balance.",
           icon: <FileText className="w-5 h-5" />
         },
         {
           step: 4,
           title: "Export expert",
-          description: "FEC normalisé, TVA/CSS/IS consolidées, export App A groupe",
+          description: "Exports FEC + App A consolidés, signatures multiples, archivage légal 10 ans.",
           icon: <TrendingUp className="w-5 h-5" />
         }
       ],
@@ -678,32 +700,29 @@ const Demo = () => {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <nav className="asted-nav sticky top-0 z-50 backdrop-blur-sm">
+      <nav className="sticky top-0 z-50 backdrop-blur-sm bg-background/80 border-b border-border">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex items-center gap-4">
-            <Button
-              variant="ghost"
+            <NeuButton
+              variant="outline"
               onClick={() => navigate("/")}
-              className="text-foreground hover:bg-secondary"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Retour
-            </Button>
+            </NeuButton>
           </div>
           
           <div className="flex items-center gap-2">
-            <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center">
-              <span className="text-primary-foreground font-bold text-xl">P</span>
-            </div>
+            <NeuIconPill icon={Shield} color="primary" size="md" />
             <span className="text-xl font-bold text-foreground">PRO.GA</span>
           </div>
           
-          <Button
+          <NeuButton
             onClick={() => navigate("/auth?signup=true")}
-            className="asted-button"
+            variant="premium"
           >
             Créer mon compte
-          </Button>
+          </NeuButton>
         </div>
       </nav>
 
@@ -742,7 +761,7 @@ const Demo = () => {
         />
 
         {/* CTA Section */}
-        <div className="mt-16 asted-card p-12 text-center">
+        <NeuCard className="mt-16 p-12 text-center">
           <h2 className="text-3xl font-bold text-foreground mb-4">
             Prêt à créer votre compte ?
           </h2>
@@ -751,26 +770,25 @@ const Demo = () => {
             votre activité en toute conformité avec la réglementation gabonaise.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button
-              size="lg"
+            <NeuButton
               onClick={() => navigate("/auth?signup=true")}
-              className="asted-button text-lg px-8 py-6"
+              variant="premium"
+              className="px-8 py-6 text-lg"
             >
               Créer mon compte gratuit
-            </Button>
-            <Button
-              size="lg"
+            </NeuButton>
+            <NeuButton
               variant="outline"
               onClick={() => navigate("/")}
-              className="text-lg px-8 py-6 bg-background border-2"
+              className="px-8 py-6 text-lg font-medium"
             >
               En savoir plus
-            </Button>
+            </NeuButton>
           </div>
-        </div>
+        </NeuCard>
 
         {/* Info Banner */}
-        <div className="mt-8 asted-card-pressed p-6 text-center">
+        <div className="mt-8 neu-inset p-6 text-center rounded-2xl">
           <p className="text-sm text-muted-foreground">
             <strong>Note :</strong> Les simulations fiscales sont indicatives. 
             La déclaration et le paiement officiels se font via l'App A (DIGITAX).

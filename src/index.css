@@ -7,203 +7,125 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* Animations fluides */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Classes d'animation */
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slideIn {
+  animation: slideIn 0.4s ease-out;
+}
+
+.animate-scaleIn {
+  animation: scaleIn 0.2s ease-out;
+}
+
+/* Transitions globales améliorées */
+* {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
 
 @layer base {
   :root {
-    /* Asted Design 01 - Neomorphic Design System */
-    /* Personnalisé avec les couleurs PRO.GA */
-    
-    /* Base colors - Light mode */
-    --background: 215 25% 97%;
-    --foreground: 222 47% 11%;
-    
-    /* Neomorphic shadows */
-    --shadow-light: 210 40% 98%;
-    --shadow-dark: 215 16% 82%;
-    
-    /* Primary - Indigo moderne PRO.GA */
-    --primary: 239 84% 67%;
+    --background: 0 0% 88%;
+    --foreground: 220 26% 14%;
+    --card: 0 0% 88%;
+    --card-foreground: 220 26% 14%;
+    --popover: 0 0% 88%;
+    --popover-foreground: 220 26% 14%;
+    --primary: 142 69% 26%;
     --primary-foreground: 0 0% 100%;
-    --primary-hover: 243 75% 59%;
-    
-    /* Secondary - Lighter indigo */
-    --secondary: 215 25% 97%;
-    --secondary-foreground: 222 47% 11%;
-    
-    /* Success - Emerald green */
-    --success: 160 84% 39%;
-    --success-foreground: 0 0% 100%;
-    
-    /* Warning - Amber */
-    --warning: 38 92% 50%;
-    --warning-foreground: 0 0% 100%;
-    
-    /* Destructive - Modern red */
+    --secondary: 214 84% 56%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 92%;
+    --muted-foreground: 220 13% 46%;
+    --accent: 47 96% 53%;
+    --accent-foreground: 220 26% 14%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    
-    /* Muted */
-    --muted: 215 25% 97%;
-    --muted-foreground: 215 16% 47%;
-    
-    /* Accent - Indigo */
-    --accent: 239 84% 67%;
-    --accent-foreground: 0 0% 100%;
-    
-    /* Card */
-    --card: 215 25% 97%;
-    --card-foreground: 222 47% 11%;
-    
-    /* Popover */
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
-    
-    /* Border & Input */
-    --border: 215 20% 89%;
-    --input: 215 20% 89%;
-    --ring: 239 84% 67%;
-    
-    /* Radius */
-    --radius: 1rem;
-    
-    /* Neomorphic specific */
-    --neo-distance: 8px;
-    --neo-blur: 16px;
-    --neo-intensity: 0.15;
-    
-    /* Sidebar */
-    --sidebar-background: 215 25% 97%;
-    --sidebar-foreground: 222 47% 11%;
-    --sidebar-primary: 239 84% 67%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 215 25% 97%;
-    --sidebar-accent-foreground: 222 47% 11%;
-    --sidebar-border: 215 20% 89%;
-    --sidebar-ring: 239 84% 67%;
+    --success: 142 69% 26%;
+    --success-foreground: 0 0% 100%;
+    --warning: 38 92% 50%;
+    --warning-foreground: 0 0% 100%;
+    --info: 214 84% 56%;
+    --info-foreground: 0 0% 100%;
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: 142 69% 26%;
+    --radius: 1.125rem;
+    --neu-light: 0 0% 100%;
+    --neu-dark: 0 0% 75%;
+    --shadow-neu: 8px 8px 16px hsl(var(--neu-dark)), -8px -8px 16px hsl(var(--neu-light));
+    --shadow-neu-sm: 4px 4px 8px hsl(var(--neu-dark)), -4px -4px 8px hsl(var(--neu-light));
+    --shadow-neu-inset: inset 6px 6px 12px hsl(var(--neu-dark)), inset -6px -6px 12px hsl(var(--neu-light));
+    --shadow-neu-button: 3px 3px 6px hsl(var(--neu-dark)), -3px -3px 6px hsl(var(--neu-light));
+    --shadow-neu-button-hover: 4px 4px 8px hsl(var(--neu-dark)), -4px -4px 8px hsl(var(--neu-light));
+    --shadow-neu-button-active: inset 2px 2px 4px hsl(var(--neu-dark)), inset -2px -2px 4px hsl(var(--neu-light));
+    --sidebar-background: var(--background);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent: var(--background);
+    --sidebar-accent-foreground: var(--foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
   }
 
   .dark {
-    /* Base colors - Dark mode */
-    --background: 222 47% 11%;
-    --foreground: 215 25% 97%;
-    
-    /* Neomorphic shadows - Dark */
-    --shadow-light: 220 20% 16%;
-    --shadow-dark: 222 47% 6%;
-    
-    /* Primary - Brighter indigo for dark mode */
-    --primary: 239 84% 75%;
-    --primary-foreground: 222 47% 11%;
-    --primary-hover: 239 84% 80%;
-    
-    /* Secondary */
-    --secondary: 222 47% 16%;
-    --secondary-foreground: 215 25% 97%;
-    
-    /* Success */
-    --success: 160 84% 45%;
+    --background: 215 25% 10%;
+    --foreground: 0 0% 95%;
+    --card: 215 25% 12%;
+    --card-foreground: 0 0% 95%;
+    --popover: 215 25% 12%;
+    --popover-foreground: 0 0% 95%;
+    --primary: 142 69% 35%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 214 84% 45%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 215 25% 20%;
+    --muted-foreground: 215 15% 65%;
+    --accent: 47 96% 60%;
+    --accent-foreground: 215 25% 10%;
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+    --success: 142 69% 35%;
     --success-foreground: 0 0% 100%;
-    
-    /* Warning */
     --warning: 38 92% 55%;
     --warning-foreground: 0 0% 100%;
-    
-    /* Destructive */
-    --destructive: 0 84% 65%;
-    --destructive-foreground: 0 0% 100%;
-    
-    /* Muted */
-    --muted: 222 47% 16%;
-    --muted-foreground: 215 16% 65%;
-    
-    /* Accent */
-    --accent: 239 84% 75%;
-    --accent-foreground: 222 47% 11%;
-    
-    /* Card */
-    --card: 222 47% 13%;
-    --card-foreground: 215 25% 97%;
-    
-    /* Popover */
-    --popover: 222 47% 13%;
-    --popover-foreground: 215 25% 97%;
-    
-    /* Border & Input */
-    --border: 215 28% 22%;
-    --input: 215 28% 22%;
-    --ring: 239 84% 75%;
-    
-    /* Sidebar */
-    --sidebar-background: 222 47% 11%;
-    --sidebar-foreground: 215 25% 97%;
-    --sidebar-primary: 239 84% 75%;
-    --sidebar-primary-foreground: 222 47% 11%;
-    --sidebar-accent: 222 47% 16%;
-    --sidebar-accent-foreground: 215 25% 97%;
-    --sidebar-border: 215 28% 22%;
-    --sidebar-ring: 239 84% 75%;
-  }
-}
-
-/* Asted Neomorphic Components */
-@layer components {
-  /* Asted Card - Neomorphic elevated card */
-  .asted-card {
-    @apply bg-background rounded-[--radius] p-6;
-    box-shadow: 
-      calc(var(--neo-distance) * 1) calc(var(--neo-distance) * 1) calc(var(--neo-blur) * 1) hsl(var(--shadow-dark) / var(--neo-intensity)),
-      calc(var(--neo-distance) * -1) calc(var(--neo-distance) * -1) calc(var(--neo-blur) * 1) hsl(var(--shadow-light) / var(--neo-intensity));
-  }
-  
-  /* Asted Card Pressed - Inset shadow */
-  .asted-card-pressed {
-    @apply bg-background rounded-[--radius] p-6;
-    box-shadow: 
-      inset calc(var(--neo-distance) * 0.5) calc(var(--neo-distance) * 0.5) calc(var(--neo-blur) * 0.5) hsl(var(--shadow-dark) / var(--neo-intensity)),
-      inset calc(var(--neo-distance) * -0.5) calc(var(--neo-distance) * -0.5) calc(var(--neo-blur) * 0.5) hsl(var(--shadow-light) / var(--neo-intensity));
-  }
-  
-  /* Asted Button */
-  .asted-button {
-    @apply bg-primary text-primary-foreground rounded-[--radius] px-6 py-3 font-medium transition-all;
-    box-shadow: 
-      calc(var(--neo-distance) * 0.5) calc(var(--neo-distance) * 0.5) calc(var(--neo-blur) * 0.5) hsl(var(--shadow-dark) / 0.2);
-  }
-  
-  .asted-button:hover {
-    @apply bg-primary-hover;
-    transform: translateY(-2px);
-    box-shadow: 
-      calc(var(--neo-distance) * 0.7) calc(var(--neo-distance) * 0.7) calc(var(--neo-blur) * 0.7) hsl(var(--shadow-dark) / 0.25);
-  }
-  
-  .asted-button:active {
-    transform: translateY(0);
-    box-shadow: 
-      calc(var(--neo-distance) * 0.3) calc(var(--neo-distance) * 0.3) calc(var(--neo-blur) * 0.3) hsl(var(--shadow-dark) / 0.15);
-  }
-  
-  /* Asted Input */
-  .asted-input {
-    @apply bg-background border-0 rounded-[--radius] px-4 py-3 text-foreground transition-all;
-    box-shadow: 
-      inset calc(var(--neo-distance) * 0.3) calc(var(--neo-distance) * 0.3) calc(var(--neo-blur) * 0.3) hsl(var(--shadow-dark) / 0.1),
-      inset calc(var(--neo-distance) * -0.3) calc(var(--neo-distance) * -0.3) calc(var(--neo-blur) * 0.3) hsl(var(--shadow-light) / 0.1);
-  }
-  
-  .asted-input:focus {
-    @apply outline-none ring-2 ring-primary;
-  }
-  
-  /* Asted Nav */
-  .asted-nav {
-    @apply bg-background;
-    box-shadow: 
-      0 2px 8px hsl(var(--shadow-dark) / 0.1),
-      0 -2px 8px hsl(var(--shadow-light) / 0.05);
+    --info: 214 84% 50%;
+    --info-foreground: 0 0% 100%;
+    --border: 215 25% 25%;
+    --input: 215 25% 25%;
+    --ring: 142 69% 35%;
+    --sidebar-background: var(--background);
+    --sidebar-foreground: var(--foreground);
+    --sidebar-primary: var(--primary);
+    --sidebar-primary-foreground: var(--primary-foreground);
+    --sidebar-accent: var(--background);
+    --sidebar-accent-foreground: var(--foreground);
+    --sidebar-border: var(--border);
+    --sidebar-ring: var(--ring);
   }
 }
 
@@ -214,5 +136,385 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  [data-radix-portal] {
+    overflow: visible !important;
+  }
+
+  [data-radix-dialog-content] {
+    overflow: visible !important;
+  }
+
+  [data-radix-alert-dialog-content] {
+    overflow: visible !important;
+  }
+}
+
+@layer components {
+  .glass-panel {
+    border-radius: 2rem;
+    background: #ffffff;
+    box-shadow:
+      0 35px 60px -35px rgba(15, 23, 42, 0.35),
+      inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(226, 232, 240, 0.7);
+  }
+
+  .neu-card {
+    background: hsl(var(--background));
+    box-shadow: 
+      8px 8px 16px hsl(var(--neu-dark)),
+      -8px -8px 16px hsl(var(--neu-light));
+    border-radius: 1.125rem;
+    border: none;
+    position: relative;
+    overflow: visible;
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  .neu-card-sm {
+    background: hsl(var(--background));
+    box-shadow: 
+      4px 4px 8px hsl(var(--neu-dark)),
+      -4px -4px 8px hsl(var(--neu-light));
+    border-radius: 0.875rem;
+    border: none;
+    position: relative;
+    overflow: visible;
+    will-change: transform;
+    transform: translateZ(0);
+  }
+
+  .neu-inset {
+    background: hsl(var(--background));
+    box-shadow: var(--shadow-neu-inset);
+    border-radius: 0.875rem;
+  }
+
+  .neu-input {
+    background: hsl(var(--background));
+    box-shadow: var(--shadow-neu-inset);
+    border-radius: 9999px;
+    border: none;
+    padding: 0.55rem 1.25rem;
+    font-size: 0.95rem;
+    color: hsl(var(--foreground));
+  }
+
+  .neu-input::placeholder {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .neu-raised {
+    background: hsl(var(--background));
+    box-shadow: 6px 6px 12px hsl(var(--neu-dark)), -6px -6px 12px hsl(var(--neu-light));
+    border-radius: 9999px;
+  }
+
+  .hover\:neu-raised:hover {
+    background: hsl(var(--background));
+    box-shadow: 6px 6px 12px hsl(var(--neu-dark)), -6px -6px 12px hsl(var(--neu-light));
+  }
+
+  .neu-button {
+    background: hsl(var(--background));
+    box-shadow: var(--shadow-neu-button);
+    border: none;
+    border-radius: 0.875rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: hsl(var(--foreground));
+    cursor: pointer;
+    transition: all 0.15s ease;
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .neu-button:hover {
+    box-shadow: var(--shadow-neu-button-hover);
+    transform: translateY(-1px);
+  }
+
+  .neu-button:active {
+    box-shadow: var(--shadow-neu-button-active);
+    transform: translateY(0);
+  }
+
+  .neu-button-admin {
+    background: linear-gradient(145deg, hsl(var(--secondary)), hsl(214 84% 52%));
+    color: hsl(var(--secondary-foreground));
+    box-shadow: 
+      4px 4px 10px rgba(37, 99, 235, 0.3),
+      -4px -4px 10px hsl(var(--neu-light)),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .neu-button-admin:hover {
+    background: linear-gradient(145deg, hsl(214 84% 58%), hsl(214 84% 54%));
+    box-shadow: 
+      5px 5px 12px rgba(37, 99, 235, 0.35),
+      -5px -5px 12px hsl(var(--neu-light)),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+
+  .neu-button-citizen {
+    background: linear-gradient(145deg, hsl(var(--primary)), hsl(142 69% 23%));
+    color: hsl(var(--primary-foreground));
+    box-shadow: 
+      4px 4px 10px rgba(16, 185, 129, 0.3),
+      -4px -4px 10px hsl(var(--neu-light)),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .neu-button-citizen:hover {
+    background: linear-gradient(145deg, hsl(142 69% 28%), hsl(142 69% 25%));
+    box-shadow: 
+      5px 5px 12px rgba(16, 185, 129, 0.35),
+      -5px -5px 12px hsl(var(--neu-light)),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  }
+
+  .neu-button-outline {
+    background: hsl(var(--background));
+    box-shadow: 
+      6px 6px 12px rgba(0, 0, 0, 0.1),
+      -6px -6px 12px rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 1.125rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: hsl(var(--foreground));
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  .neu-button-outline:hover {
+    box-shadow: 
+      8px 8px 16px rgba(0, 0, 0, 0.12),
+      -8px -8px 16px rgba(255, 255, 255, 0.9);
+    transform: translateY(-2px);
+  }
+
+  .neu-button-outline:active {
+    box-shadow: 
+      inset 4px 4px 8px rgba(0, 0, 0, 0.1),
+      inset -4px -4px 8px rgba(255, 255, 255, 0.7);
+    transform: translateY(0);
+  }
+
+  .neu-button-premium {
+    background: linear-gradient(180deg, 
+      hsl(142, 68%, 82%) 0%,
+      hsl(142, 60%, 68%) 45%,
+      hsl(142, 55%, 52%) 100%
+    );
+    box-shadow: 
+      0 6px 14px rgba(22, 163, 74, 0.28),
+      0 2px 4px rgba(15, 118, 60, 0.28),
+      inset 0 -3px 6px rgba(15, 118, 60, 0.32),
+      inset 0 1px 2px rgba(255, 255, 255, 0.9);
+    border: 1.5px solid rgba(34, 197, 94, 0.45);
+    border-radius: 9999px;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(15, 23, 42, 0.72);
+    text-shadow:
+      0 -1px 0 rgba(0, 0, 0, 0.25),
+      0 1px 0 rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 50px;
+    position: relative;
+    overflow: visible;
+  }
+
+  .neu-button-premium::before {
+    content: '';
+    position: absolute;
+    top: 8%;
+    left: 5%;
+    right: 5%;
+    height: 28%;
+    background: linear-gradient(180deg, 
+      rgba(255, 255, 255, 0.82) 0%,
+      rgba(255, 255, 255, 0.32) 55%,
+      transparent 100%
+    );
+    border-radius: 9999px 9999px 0 0;
+    pointer-events: none;
+    filter: blur(1.2px);
+  }
+
+  .neu-button-premium::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 14%;
+    right: 14%;
+    height: 10px;
+    background: radial-gradient(ellipse, rgba(22, 163, 74, 0.32) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(5px);
+    z-index: -1;
+  }
+
+  .neu-button-premium:hover {
+    background: linear-gradient(180deg, 
+      hsl(142, 70%, 84%) 0%,
+      hsl(142, 62%, 70%) 45%,
+      hsl(142, 57%, 54%) 100%
+    );
+    box-shadow: 
+      0 8px 18px rgba(22, 163, 74, 0.34),
+      0 3px 6px rgba(15, 118, 60, 0.34),
+      inset 0 -4px 8px rgba(15, 118, 60, 0.35),
+      inset 0 1px 3px rgba(255, 255, 255, 0.95);
+    transform: translateY(-2px);
+  }
+
+  .neu-button-premium:active {
+    transform: translateY(-1px);
+    box-shadow: 
+      0 6px 14px rgba(22, 163, 74, 0.32),
+      0 2px 5px rgba(15, 118, 60, 0.32),
+      inset 0 -4px 8px rgba(15, 118, 60, 0.42),
+      inset 0 1px 2px rgba(255, 255, 255, 0.9);
+  }
+
+  .neu-button-success {
+    background: linear-gradient(180deg, 
+      hsl(142, 68%, 82%) 0%,
+      hsl(142, 60%, 68%) 45%,
+      hsl(142, 55%, 52%) 100%
+    );
+    box-shadow: 
+      0 6px 14px rgba(16, 185, 129, 0.3),
+      0 2px 4px rgba(5, 150, 105, 0.3),
+      inset 0 -3px 6px rgba(4, 120, 87, 0.34),
+      inset 0 1px 2px rgba(255, 255, 255, 0.9);
+    border: 1.5px solid rgba(45, 212, 191, 0.45);
+    border-radius: 9999px;
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: rgba(15, 23, 42, 0.72);
+    text-shadow:
+      0 -1px 0 rgba(0, 0, 0, 0.25),
+      0 1px 0 rgba(255, 255, 255, 0.7);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-height: 50px;
+    position: relative;
+    overflow: visible;
+  }
+
+  .neu-button-success::before {
+    content: '';
+    position: absolute;
+    top: 8%;
+    left: 5%;
+    right: 5%;
+    height: 28%;
+    background: linear-gradient(180deg, 
+      rgba(255, 255, 255, 0.82) 0%,
+      rgba(255, 255, 255, 0.32) 55%,
+      transparent 100%
+    );
+    border-radius: 9999px 9999px 0 0;
+    pointer-events: none;
+    filter: blur(1.2px);
+  }
+
+  .neu-button-success::after {
+    content: '';
+    position: absolute;
+    bottom: -8px;
+    left: 14%;
+    right: 14%;
+    height: 10px;
+    background: radial-gradient(ellipse, rgba(16, 185, 129, 0.34) 0%, transparent 70%);
+    border-radius: 50%;
+    filter: blur(5px);
+    z-index: -1;
+  }
+
+  .neu-button-success:hover {
+    background: linear-gradient(180deg, 
+      hsl(142, 70%, 84%) 0%,
+      hsl(142, 62%, 70%) 45%,
+      hsl(142, 57%, 54%) 100%
+    );
+    box-shadow: 
+      0 8px 18px rgba(16, 185, 129, 0.36),
+      0 3px 6px rgba(5, 150, 105, 0.34),
+      inset 0 -4px 8px rgba(4, 120, 87, 0.38),
+      inset 0 1px 3px rgba(255, 255, 255, 0.95);
+    transform: translateY(-2px);
+  }
+
+  .neu-button-success:active {
+    transform: translateY(-1px);
+    box-shadow: 
+      0 6px 14px rgba(16, 185, 129, 0.32),
+      0 2px 5px rgba(5, 150, 105, 0.32),
+      inset 0 -4px 8px rgba(4, 120, 87, 0.44),
+      inset 0 1px 2px rgba(255, 255, 255, 0.9);
+  }
+
+  .icon-pill {
+    width: 40px;
+    height: 40px;
+    border-radius: 9999px;
+    background: hsl(var(--background));
+    box-shadow: 4px 4px 8px hsl(var(--neu-dark)), -4px -4px 8px hsl(var(--neu-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .nav-menu-item {
+    color: hsl(220 9% 16%);
+    position: relative;
+  }
+
+  .nav-menu-item .nav-menu-icon svg {
+    color: hsl(220 9% 16%);
+  }
+
+  .nav-menu-item:hover {
+    color: hsl(220 9% 16%);
+  }
+
+  .nav-menu-item.active {
+    background: hsl(var(--background));
+    box-shadow: 
+      6px 6px 12px hsl(var(--neu-dark)),
+      -6px -6px 12px hsl(var(--neu-light));
+    color: hsl(142 69% 26%);
+    font-weight: 600;
+    margin: 2px;
+    border-radius: 1rem;
+  }
+
+  .nav-menu-item.active .nav-menu-icon svg {
+    color: hsl(142 69% 26%);
+  }
+
+  @media (max-width: 768px) {
+    .neu-card {
+      border-radius: 0.875rem;
+      box-shadow: 
+        4px 4px 8px hsl(var(--neu-dark)),
+        -4px -4px 8px hsl(var(--neu-light));
+    }
   }
 }
