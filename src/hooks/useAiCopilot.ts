@@ -46,20 +46,25 @@ const fakeExtraction = (documents: AiDocumentUpload[]): TaxBases => {
   );
   return {
     tva: {
-      collected: Math.round(base * 0.18),
+      collectee: Math.round(base * 0.18),
       deductible: Math.round(base * 0.04),
+      due: Math.round(base * 0.14),
     },
     css: {
-      base,
+      baseHT: base,
       exclusions: Math.round(base * 0.1),
+      montant: Math.round(base * 0.01),
     },
     is: {
-      base: Math.round(base * 0.25),
-      rate: 0.25,
+      baseImposable: Math.round(base * 0.25),
+      impot: Math.round(base * 0.0625),
+      tauxEffectif: 0.25,
     },
     irpp: {
-      base: Math.round(base * 0.3),
-      quotient: 1.5,
+      baseImposable: Math.round(base * 0.3),
+      quotientFamilial: 1.5,
+      impot: Math.round(base * 0.045),
+      tauxEffectif: 0.15,
     },
   };
 };

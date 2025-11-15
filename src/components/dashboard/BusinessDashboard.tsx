@@ -34,7 +34,7 @@ export const BusinessDashboard = () => {
         customerName: "Marie Dupont",
         currency: "XOF",
         issuedOn: new Date().toISOString(),
-        status: "issued",
+        status: "ISSUED",
         lines: [
           { designation: "Robe wax", quantity: 2, unitPrice: 65000, taxRate: 18 },
           { designation: "Accessoires", quantity: 1, unitPrice: 35000, taxRate: 18 },
@@ -45,7 +45,7 @@ export const BusinessDashboard = () => {
         customerName: "Agence Ebène",
         currency: "XOF",
         issuedOn: new Date().toISOString(),
-        status: "issued",
+        status: "ISSUED",
         lines: [{ designation: "Commande B2B", quantity: 10, unitPrice: 45000, taxRate: 18 }],
       });
     })();
@@ -279,17 +279,17 @@ export const BusinessDashboard = () => {
                     <div className="flex items-center justify-between mb-1.5 sm:mb-2 gap-2">
                       <p className="font-semibold text-xs sm:text-sm text-slate-900 truncate flex-1 min-w-0">{invoice.numero}</p>
                       <span className={`text-[10px] sm:text-xs font-medium px-2 sm:px-3 py-0.5 sm:py-1 rounded-full flex-shrink-0 whitespace-nowrap ${
-                        invoice.status === "paid" 
+                        invoice.status === "PAID" 
                           ? "text-success bg-success/10" 
-                          : invoice.status === "issued"
+                          : invoice.status === "ISSUED"
                           ? "text-warning bg-warning/10"
                           : "text-muted-foreground bg-muted/10"
                       }`}>
-                        {invoice.status === "paid" ? "Payée" : invoice.status === "issued" ? "Émise" : "Brouillon"}
+                        {invoice.status === "PAID" ? "Payée" : invoice.status === "ISSUED" ? "Émise" : "Brouillon"}
                       </span>
                     </div>
                     <p className="text-[10px] sm:text-xs text-muted-foreground mb-0.5 sm:mb-1 truncate">{invoice.customerName}</p>
-                    <p className="text-xs sm:text-sm font-bold text-primary truncate">{currency.format(invoice.totalTtc)}</p>
+                    <p className="text-xs sm:text-sm font-bold text-primary truncate">{currency.format(invoice.totals.ttc)}</p>
                   </div>
                 ))}
                 <NeuButton 

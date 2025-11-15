@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import type { Invoice } from "@/types/domain";
+import { InvoiceStatus } from "@/types/domain";
 
 type InvoiceListProps = {
   invoices: Invoice[];
@@ -19,13 +20,11 @@ type InvoiceListProps = {
   onMarkPaid?: (invoice: Invoice) => void;
 };
 
-const statusLabel: Record<Invoice["status"], string> = {
-  draft: "Brouillon",
-  issued: "Émise",
-  sent: "Envoyée",
-  paid: "Payée",
-  overdue: "En retard",
-  cancelled: "Annulée",
+const statusLabel: Record<InvoiceStatus, string> = {
+  DRAFT: "Brouillon",
+  ISSUED: "Émise",
+  PAID: "Payée",
+  CANCELLED: "Annulée",
 };
 
 export const InvoiceList = ({ invoices, onCreate, onEdit, onDelete, onMarkPaid }: InvoiceListProps) => {
@@ -58,7 +57,7 @@ export const InvoiceList = ({ invoices, onCreate, onEdit, onDelete, onMarkPaid }
                       <p className="font-semibold">{invoice.invoiceNumber}</p>
                       <p className="text-sm text-muted-foreground">{invoice.customerName}</p>
                     </div>
-                    <Badge variant={invoice.status === "paid" ? "default" : "secondary"}>
+                    <Badge variant={invoice.status === "PAID" ? "default" : "secondary"}>
                       {statusLabel[invoice.status]}
                     </Badge>
                   </div>
@@ -77,7 +76,7 @@ export const InvoiceList = ({ invoices, onCreate, onEdit, onDelete, onMarkPaid }
                     <Button variant="outline" size="sm" onClick={() => onEdit?.(invoice)}>
                       Ouvrir
                     </Button>
-                    {invoice.status !== "paid" && (
+                    {invoice.status !== "PAID" && (
                       <Button variant="outline" size="sm" onClick={() => onMarkPaid?.(invoice)}>
                         Marquer payée
                       </Button>

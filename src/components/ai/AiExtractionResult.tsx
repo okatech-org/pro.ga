@@ -51,12 +51,12 @@ export const AiExtractionResult = ({ summary, loading }: AiExtractionResultProps
         {hasData && (
           <>
             <div className="grid md:grid-cols-2 gap-4">
-              <ExtractionCard title="TVA collectée" value={formatCurrency(taxes?.tva?.collected)} />
+              <ExtractionCard title="TVA collectée" value={formatCurrency(taxes?.tva?.collectee)} />
               <ExtractionCard title="TVA déductible" value={formatCurrency(taxes?.tva?.deductible)} />
-              <ExtractionCard title="CSS base" value={formatCurrency(taxes?.css?.base)} />
-              <ExtractionCard title="IS Base" value={formatCurrency(taxes?.is?.base)} />
-              <ExtractionCard title="IRPP Base" value={formatCurrency(taxes?.irpp?.base)} />
-              <ExtractionCard title="IRPP Quotient" value={(taxes?.irpp?.quotient ?? 1).toString()} />
+              <ExtractionCard title="CSS base" value={formatCurrency(taxes?.css?.baseHT)} />
+              <ExtractionCard title="IS Base" value={formatCurrency(taxes?.is?.baseImposable)} />
+              <ExtractionCard title="IRPP Base" value={formatCurrency(taxes?.irpp?.baseImposable)} />
+              <ExtractionCard title="IRPP Quotient" value={(taxes?.irpp?.quotientFamilial ?? 1).toString()} />
             </div>
 
             <div className="space-y-3 pt-4 border-t border-border">
