@@ -111,8 +111,8 @@ export const DashboardSidebar = () => {
         </SidebarHeader>
 
         {/* Menu Content */}
-        <SidebarContent className="flex-1 py-4 pr-2 pl-0 overflow-visible min-h-0">
-          <NeuCard className="p-5 space-y-6 h-full">
+        <SidebarContent className="flex-1 py-4 pr-2 pl-0 min-h-0">
+          <NeuCard className="p-5 space-y-6 h-full overflow-y-auto">
             {menuSections.map((section, idx) => (
               <div key={idx} className="space-y-2">
                 <h3 className="px-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-400">
