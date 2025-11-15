@@ -1,9 +1,7 @@
 import { useCallback, useEffect, useState, useMemo } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import type { StoreOrder } from "@/types/domain";
+import type { StoreOrder, OrderStatus } from "@/types/domain";
 import { toast } from "sonner";
-
-export type OrderStatus = "pending" | "confirmed" | "processing" | "shipped" | "delivered" | "cancelled";
 
 const storageKey = (workspaceId: string) => `proga.store.orders.${workspaceId}`;
 
@@ -49,18 +47,18 @@ export const useStoreOrders = (workspaceId?: string | null) => {
       }
 
       const localOrders = loadOrders(workspaceId);
-      const allOrders = [
-        ...(supabaseOrders || []).map((o) => ({
+      const allOrders: StoreOrder[] = [
+        ...(supabaseOrders || []).map((o): StoreOrder => ({
           id: o.id,
           workspaceId: o.workspace_id,
-          storeSlug: (o.metadata as any)?.storeSlug || "",
+          storeSlug: o.store_slug,
           customerName: o.customer_name,
           customerEmail: o.customer_email || null,
           customerPhone: o.customer_phone || null,
           items: o.items as Array<{ productId: string; name: string; quantity: number; unitPrice: number }>,
           total: Number(o.total),
           currency: o.currency || "XOF",
-          status: o.status as OrderStatus,
+          status: (o.status === "pending" || o.status === "paid" || o.status === "cancelled" ? o.status : "pending") as OrderStatus,
           createdAt: o.created_at,
           updatedAt: o.updated_at || o.created_at,
         })),

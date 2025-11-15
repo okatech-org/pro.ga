@@ -1,4 +1,4 @@
-import type { BusinessWorkspace, PersonalWorkspace, Person } from "@/types/domain";
+import type { Workspace, Person } from "@/types/domain";
 import { useCurrentWorkspace } from "./useCurrentWorkspace";
 
 const MOCK_PERSON: Person = {

@@ -19,7 +19,7 @@ export const BusinessDashboard = () => {
   const navigate = useNavigate();
   const { getCurrentBusinessWorkspace } = useWorkspaces();
   const business = getCurrentBusinessWorkspace();
-  const { invoices, createInvoice, getTotalsSummary, isLoading: invoicesLoading, error: invoicesError } = useInvoices(business?.id);
+  const { invoices, createInvoice, getTotalsSummary, isLoading: invoicesLoading } = useInvoices(business?.id);
   const seededRef = useRef(false);
 
   useEffect(() => {

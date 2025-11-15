@@ -309,6 +309,8 @@ export interface StoreProduct extends BaseEntity {
   featured: boolean;
 }
 
+export type OrderStatus = "pending" | "confirmed" | "processing" | "shipped" | "delivered" | "paid" | "cancelled";
+
 export interface StoreOrder extends BaseEntity {
   workspaceId: string;
   storeSlug: string;
@@ -323,7 +325,7 @@ export interface StoreOrder extends BaseEntity {
   }>;
   total: number;
   currency: string;
-  status: "pending" | "paid" | "cancelled";
+  status: OrderStatus;
 }
 
 export interface PosCartItem {

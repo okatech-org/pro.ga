@@ -138,6 +138,7 @@ export const useInvoices = (workspaceId?: string | null) => {
         lines,
         totals,
         status: invoiceData.status ?? "draft",
+        issuedOn: invoiceData.issuedOn ?? new Date().toISOString().split('T')[0],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       };
