@@ -198,9 +198,9 @@ const SettingsPage = () => {
 
         if (workspacesData && Array.isArray(workspacesData)) {
           setWorkspaces(
-            workspacesData.map((ws) => ({
-              ...ws,
-              scope: ws.type,
+            workspacesData.map((ws: any) => ({
+              ...(ws && typeof ws === 'object' ? ws : {}),
+              scope: ws?.type || ws?.scope || 'personal',
             })) as Workspace[]
           );
         }
@@ -434,28 +434,24 @@ const SettingsPage = () => {
         };
 
         if (ws.scope === "business") {
-          const { data: invoices } = await supabase
-            .from("invoices")
+          const { data: invoices } = await (supabase.from("invoices") as any)
             .select("*")
             .eq("workspace_id", ws.id);
           if (invoices) workspaceData.invoices = invoices;
 
-          const { data: storeProducts } = await supabase
-            .from("store_products")
+          const { data: storeProducts } = await (supabase.from("store_products") as any)
             .select("*")
             .eq("workspace_id", ws.id);
           if (storeProducts) workspaceData.storeProducts = storeProducts;
         }
 
         if (ws.scope === "personal") {
-          const { data: contracts } = await supabase
-            .from("employment_contracts")
+          const { data: contracts } = await (supabase.from("employment_contracts") as any)
             .select("*")
             .eq("workspace_id", ws.id);
           if (contracts) workspaceData.contracts = contracts;
 
-          const { data: payslips } = await supabase
-            .from("payslips")
+          const { data: payslips } = await (supabase.from("payslips") as any)
             .select("*")
             .eq("workspace_id", ws.id);
           if (payslips) workspaceData.payslips = payslips;
@@ -517,23 +513,23 @@ const SettingsPage = () => {
 
       for (const ws of workspaces) {
         if (ws.scope === "business") {
-          await supabase.from("invoices").delete().eq("workspace_id", ws.id);
-          await supabase.from("store_products").delete().eq("workspace_id", ws.id);
-          await supabase.from("store_orders").delete().eq("workspace_id", ws.id);
-          await supabase.from("journal_entries").delete().eq("workspace_id", ws.id);
+          await (supabase.from("invoices") as any).delete().eq("workspace_id", ws.id);
+          await (supabase.from("store_products") as any).delete().eq("workspace_id", ws.id);
+          await (supabase.from("store_orders") as any).delete().eq("workspace_id", ws.id);
+          await (supabase.from("journal_entries") as any).delete().eq("workspace_id", ws.id);
         }
 
         if (ws.scope === "personal") {
-          await supabase.from("employment_contracts").delete().eq("workspace_id", ws.id);
-          await supabase.from("payslips").delete().eq("workspace_id", ws.id);
+          await (supabase.from("employment_contracts") as any).delete().eq("workspace_id", ws.id);
+          await (supabase.from("payslips") as any).delete().eq("workspace_id", ws.id);
         }
 
-        await supabase.from("documents").delete().eq("workspace_id", ws.id);
-        await supabase.from("tax_profiles").delete().eq("workspace_id", ws.id);
-        await supabase.from("ai_jobs").delete().eq("workspace_id", ws.id);
-        await supabase.from("export_packets").delete().eq("workspace_id", ws.id);
+        await (supabase.from("documents") as any).delete().eq("workspace_id", ws.id);
+        await (supabase.from("tax_profiles") as any).delete().eq("workspace_id", ws.id);
+        await (supabase.from("ai_jobs") as any).delete().eq("workspace_id", ws.id);
+        await (supabase.from("export_packets") as any).delete().eq("workspace_id", ws.id);
 
-        await supabase.from("workspaces").delete().eq("id", ws.id);
+        await (supabase.from("workspaces") as any).delete().eq("id", ws.id);
       }
 
       await supabase.from("profiles").delete().eq("user_id", userId);

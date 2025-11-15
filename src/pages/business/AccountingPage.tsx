@@ -13,7 +13,7 @@ import { ArrowLeft, BookOpen } from "lucide-react";
 const AccountingPage = () => {
   const navigate = useNavigate();
   const { currentWorkspace } = useCurrentWorkspace();
-  const { entries, balances, addEntry, stats } = useLedger(currentWorkspace?.id);
+  const { entries, balances, balanceSheet, addEntry, stats } = useLedger(currentWorkspace?.id);
 
   if (!currentWorkspace) {
     return (
@@ -48,7 +48,7 @@ const AccountingPage = () => {
     <div className="min-h-screen bg-[#f6f7fb] p-6 space-y-6">
       <NeuCard className="p-6 mb-2">
         <div className="flex items-start gap-4">
-          <NeuButton variant="outline" size="icon" onClick={() => navigate("/dashboard")}>
+          <NeuButton variant="outline" size="sm" onClick={() => navigate("/dashboard")}>
             <ArrowLeft className="w-4 h-4" />
           </NeuButton>
           <div>
@@ -88,7 +88,7 @@ const AccountingPage = () => {
             <CardTitle className="text-sm">Écritures</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">{stats.entriesCount}</p>
+            <p className="text-2xl font-bold">{entries.length}</p>
           </CardContent>
         </NeuCard>
       </div>
@@ -101,7 +101,19 @@ const AccountingPage = () => {
         </TabsList>
 
         <TabsContent value="journal" className="space-y-4">
-          <AccountingJournal entries={entries} onAddEntry={addEntry} />
+          <AccountingJournal 
+            entries={entries} 
+            onAdd={(values) => {
+              addEntry({
+                date: values.date,
+                description: values.description,
+                debitAccount: values.debitAccount,
+                creditAccount: values.creditAccount,
+                amount: values.amount,
+                reference: values.reference || undefined,
+              });
+            }} 
+          />
         </TabsContent>
 
         <TabsContent value="ledger" className="space-y-4">
@@ -109,7 +121,7 @@ const AccountingPage = () => {
         </TabsContent>
 
         <TabsContent value="balance" className="space-y-4">
-          <BalanceSheet balances={balances} />
+          <BalanceSheet sections={balanceSheet} />
         </TabsContent>
       </Tabs>
     </div>

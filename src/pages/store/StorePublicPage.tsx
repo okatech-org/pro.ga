@@ -34,7 +34,7 @@ const loadStoreBySlug = async (slug: string): Promise<{ config: StoreConfig | nu
 
             return {
               config: state.config as StoreConfig,
-              products: (products || []).map((p) => ({
+              products: (products || []).map((p: any) => ({
                 id: p.id,
                 workspaceId: p.workspace_id,
                 name: p.name,
@@ -71,7 +71,7 @@ const loadStoreBySlug = async (slug: string): Promise<{ config: StoreConfig | nu
 
             const allProducts = [
               ...testProducts,
-              ...((products || []).map((p) => ({
+              ...((products || []).map((p: any) => ({
                 id: p.id,
                 workspaceId: p.workspace_id,
                 name: p.name,
@@ -133,7 +133,7 @@ const loadStoreBySlug = async (slug: string): Promise<{ config: StoreConfig | nu
 
       return {
         config: state.config as StoreConfig,
-        products: (products || []).map((p) => ({
+        products: (products || []).map((p: any) => ({
           id: p.id,
           workspaceId: p.workspace_id,
           name: p.name,

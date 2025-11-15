@@ -69,7 +69,7 @@ const DemoAccountCard = ({
   isLoading
 }: DemoAccountProps & { onDiscover: () => void; onLoginDemo: () => void; isLoading: boolean }) => {
   const getIconColor = () => {
-    if (color.includes('destructive')) return 'error';
+    if (color.includes('destructive')) return 'danger';
     if (color.includes('success')) return 'success';
     if (color.includes('warning')) return 'warning';
     return 'primary';
@@ -160,7 +160,7 @@ const DemoDetailModal = ({
         <DialogHeader>
           <div className="flex items-center gap-4 flex-1 mb-2">
             <div className={`w-16 h-16 ${getIconGradient()} rounded-2xl flex items-center justify-center shadow-lg flex-shrink-0`}>
-              {React.cloneElement(account.icon as React.ReactElement, { className: "w-8 h-8 text-white" })}
+              {React.createElement(account.icon, { className: "w-8 h-8 text-white" })}
             </div>
             <div className="flex-1 min-w-0">
               <p className="text-xs uppercase tracking-[0.3em] text-slate-400 mb-2">{account.category}</p>
