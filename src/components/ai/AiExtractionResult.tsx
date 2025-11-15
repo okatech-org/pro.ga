@@ -54,7 +54,7 @@ export const AiExtractionResult = ({ summary, loading }: AiExtractionResultProps
               <ExtractionCard title="TVA collectée" value={formatCurrency(taxes?.tva?.collectee)} />
               <ExtractionCard title="TVA déductible" value={formatCurrency(taxes?.tva?.deductible)} />
               <ExtractionCard title="CSS base" value={formatCurrency(taxes?.css?.baseHT)} />
-              <ExtractionCard title="IS Base" value={formatCurrency(taxes?.is?.baseImposable)} />
+              <ExtractionCard title="IS Base" value={formatCurrency(taxes?.isImf?.resultatFiscal)} />
               <ExtractionCard title="IRPP Base" value={formatCurrency(taxes?.irpp?.baseImposable)} />
               <ExtractionCard title="IRPP Quotient" value={(taxes?.irpp?.quotientFamilial ?? 1).toString()} />
             </div>

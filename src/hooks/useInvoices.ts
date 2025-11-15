@@ -138,8 +138,8 @@ export const useInvoices = (workspaceId?: string | null) => {
         lines,
         totals,
         status: invoiceData.status ?? "DRAFT",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
       };
 
       persist([...invoices, invoice], nextSequence);
