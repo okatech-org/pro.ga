@@ -107,13 +107,13 @@ export const BusinessDashboard = () => {
       {business.eshopName && (
         <div className="flex justify-end">
           <a
-            href={`https://${business.eshopName}.pro.ga`}
+            href={`/${business.eshopName}`}
             target="_blank"
             rel="noreferrer"
             className="neu-button-outline px-4 py-2 rounded-lg flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors"
           >
             <Store className="w-4 h-4" />
-            {business.eshopName}.pro.ga
+            pro.ga/{business.eshopName}
           </a>
         </div>
       )}
