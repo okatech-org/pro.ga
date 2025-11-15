@@ -113,22 +113,20 @@ export const DashboardSidebar = () => {
         {/* Menu Content */}
         <SidebarContent className="flex-1 overflow-y-auto overflow-x-visible space-y-6 py-4 pr-2 pl-0">
           {menuSections.map((section, idx) => (
-            <div key={idx}>
-              <h3 className="px-2 mb-3 text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-400">
+            <div key={idx} className="space-y-3">
+              <h3 className="px-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-slate-400">
                 {section.label}
               </h3>
-              <NeuCard className="p-3 space-y-1.5">
+              <NeuCard className="p-5 space-y-2">
                 {section.items.map((item) => (
                   <NavLink
                     key={item.href}
                     to={item.href}
                     end={item.href === "/dashboard"}
-                    className="nav-menu-item flex items-center gap-3 rounded-full px-4 py-2.5 text-base font-normal text-slate-900 hover:bg-white/40 transition-all duration-200 group relative"
+                    className="flex items-center gap-4 px-4 py-3 text-base font-normal text-slate-900 hover:bg-white/40 rounded-xl transition-all duration-200"
                     activeClassName=""
                   >
-                    <div className="nav-menu-icon flex items-center justify-center flex-shrink-0 transition-all duration-200">
-                      <item.icon className="w-5 h-5 flex-shrink-0 stroke-[1.8]" />
-                    </div>
+                    <item.icon className="w-5 h-5 flex-shrink-0 stroke-[1.8]" />
                     <span className="truncate flex-1 min-w-0">{item.label}</span>
                   </NavLink>
                 ))}
@@ -139,10 +137,10 @@ export const DashboardSidebar = () => {
 
         {/* Footer */}
         <SidebarFooter className="p-0">
-          <NeuCard className="p-5 space-y-4">
+          <NeuCard className="p-5 space-y-3">
             <div>
-              <p className="text-xs text-slate-400 mb-1 truncate">Connecté en tant que</p>
-              <p className="text-sm font-bold text-slate-900 truncate">
+              <p className="text-xs text-slate-400 mb-1.5 truncate">Connecté en tant que</p>
+              <p className="text-base font-bold text-slate-900 truncate">
                 {person?.email || "marie.dupont@pro.ga"}
               </p>
             </div>
@@ -159,7 +157,7 @@ export const DashboardSidebar = () => {
                   toast.error("Impossible de se déconnecter");
                 }
               }}
-              className="w-full flex items-center gap-3 rounded-full px-4 py-2.5 text-base text-slate-900 hover:bg-white/40 transition-all duration-200"
+              className="w-full flex items-center gap-4 px-4 py-3 text-base text-slate-900 hover:bg-white/40 rounded-xl transition-all duration-200"
             >
               <LogOut className="w-5 h-5 flex-shrink-0 stroke-[1.8]" />
               <span className="truncate">Déconnexion</span>
